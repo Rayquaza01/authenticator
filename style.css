@@ -1,0 +1,20 @@
+#totpbox {
+    font-family: monospace;
+    white-space: nowrap;
+    padding: 5px;
+    width: 100%;
+    float: left;
+    display: flex;
+    font-size: 20px;
+}
+#names {
+    width: 50%;
+    float: left;
+    margin-right: 10px;
+}
+#numbers {
+    width: 50%;
+    float: right;
+    text-align: right;
+    margin-left: 10px;
+}
