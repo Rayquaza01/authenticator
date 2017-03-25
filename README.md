@@ -8,3 +8,5 @@ The JSON box in the options page can be used for backup/restore.
 
 This addon uses [JS-OTP](https://github.com/jiangts/JS-OTP/) to generate the codes.  
 The icons are from [Material Design Icons](https://materialdesignicons.com/).
+
+[Link to addon page](https://addons.mozilla.org/en-US/firefox/addon/two-factor-authenticator/)
