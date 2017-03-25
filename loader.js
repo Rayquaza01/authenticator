@@ -2,12 +2,11 @@ function removeItem(ele) {
     ele.addEventListener("click", () => {
         browser.storage.local.remove(ele.id);
         location.reload();
-    }, false);
+    });
 }
 function copyItem(ele) {
     ele.addEventListener("click", () => {
         var targetId = "_hiddenCopyText_";
-        var origSelectionStart, origSelectionEnd;
         var target = document.createElement("textarea");
         target.style.position = "absolute";
         target.style.left = "-9999px";
@@ -15,36 +14,28 @@ function copyItem(ele) {
         target.id = targetId;
         document.body.appendChild(target);
         target.textContent = ele.id;
-        var currentFocus = document.activeElement;
         target.focus();
         target.setSelectionRange(0, target.value.length);
-        var succeed;
-        try {
-          succeed = document.execCommand("copy");
-        } catch(e) {
-            succeed = false;
-        }
-        target.textContent = "";
-        return succeed;
+        document.execCommand("copy");
     });
 }
-function restoreOptions() {
+function loadTOTP() {
     browser.storage.local.get().then((res) => {
         for (var i in res) {
             if (res.hasOwnProperty(i)) {
+                var totp = new jsOTP.totp();
+                var timecode = totp.getOtp(res[i]);
                 var names = document.getElementById("names");
                 var numbers = document.getElementById("numbers");
                 var name = document.createElement("span");
+                name.innerText = i;
                 var num = document.createElement("span");
-                var del = document.createElement("a");
-                var copy = document.createElement("a");
-                del.innerHTML = '<img src="icons/delete.png">';
+                num.innerText = timecode;
+                var del = document.createElement("img");
+                del.src = "icons/delete.png";
                 del.id = i;
-                copy.innerHTML = '<img src="icons/content-copy.png">';
-                var totp = new jsOTP.totp();
-                var timecode = totp.getOtp(res[i]);
-                name.innerHTML = i;
-                num.innerHTML = timecode;
+                var copy = document.createElement("img");
+                copy.src = "icons/content-copy.png";
                 copy.id = timecode;
                 names.appendChild(name);
                 numbers.appendChild(num);
@@ -58,4 +49,4 @@ function restoreOptions() {
         }
     });
 }
-document.addEventListener("DOMContentLoaded", restoreOptions);
+document.addEventListener("DOMContentLoaded", loadTOTP);

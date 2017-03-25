@@ -7,7 +7,7 @@ function saveOptions(e) {
 }
 function restoreOptions(e) {
     browser.storage.local.get().then((res) => {
-        document.getElementById("json").innerHTML = JSON.stringify(res, false, 4);
+        document.getElementById("json").value = JSON.stringify(res, false, 4);
     });
 }
 document.querySelector("form").addEventListener("submit", saveOptions);
