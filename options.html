@@ -2,20 +2,21 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="options.css">
     </head>
     <body>
-        <form>
-            <label>New Site Name: <input type="text" id="name" autocomplete="off"></label>
-            <label>New Site Code: <input type="text" id="num" autocomplete="off"></label>
-            <input id="submit" type="submit" value="Save">
-        </form>
-        <form>
-            <center>
-                <button id="loadJSON">Load JSON</button>
-                <br>
-                <textarea id="json" cols="100" rows="50"></textarea>
-            </center>
-        </form>
-        <script src="save.js"></script>
+        <div id="form">
+            Add New Site:
+            <input type="text" id="name" autocomplete="off" placeholder="Display Name">
+            <input type="text" id="num" autocomplete="off" placeholder="Secret Key" size="64">
+            <img src="icons/check.png" id="save">
+        </div>
+        <div id="sites"></div>
+        <div id="extras">
+            <a id="export" download="totp.json"><button>Export</button></a>
+            <input type="file" id="import" accept=".json">
+            <button id="importButton">Import</button>
+        </div>
+        <script src="options.js"></script>
     </body>
 </html>

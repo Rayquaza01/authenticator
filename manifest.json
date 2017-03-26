@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Two Factor Authenticator",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Generates TOTPs for 2 factor authentication",
     "applications": {
         "gecko": {

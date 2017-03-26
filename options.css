@@ -1,0 +1,27 @@
+body {
+    font-family: monospace;
+    font-size: 20px;
+}
+#form, #sites {
+    padding: 5px;
+}
+#form, #extras {
+    display: flex;
+    align-items: center;
+}
+input {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#extras {
+    float: right;
+}
+#import {
+    float: right;
+}
+button, #import {
+    margin: 4px;
+    text-align: center;
+    font-size: 20px;
+    height: 30px;
+}

@@ -2,11 +2,12 @@
 Firefox addon that generates TOTPs for 2 factor authentication
 
 This addon shows TOTPs (Timed One Time Passwords) for accounts set up with 2 Factor Authentication/2 Step Verification.  
-Enter the site name and secret key in the addon's options page and click save to add a site.  
-The code will appear in the toolbar icon. The copy button copies the code and the delete button removes the code.  
-The JSON box in the options page can be used for backup/restore.
+Enter the site name and secret key in the addon's options page and click the check to add a site.  
+The codes will appear in the toolbar icon. The copy icon after the code copies the code.
 
-This addon uses [JS-OTP](https://github.com/jiangts/JS-OTP/) to generate the codes.  
+On the options page, the pencil icon next to a site allows you to change the key for that site and the delete icon removes that site.
+
+This addon uses [JS-OTP](https://github.com/jiangts/JS-OTP/) and [jsSHA](https://github.com/Caligatio/jsSHA) to generate the codes.  
 The icons are from [Material Design Icons](https://materialdesignicons.com/).
 
 [Link to addon page](https://addons.mozilla.org/en-US/firefox/addon/two-factor-authenticator/)

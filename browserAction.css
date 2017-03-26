@@ -1,11 +1,13 @@
-#totpbox {
+body {
     font-family: monospace;
+    font-size: 20px;
+}
+#totpbox {
     white-space: nowrap;
     padding: 5px;
     width: 100%;
     float: left;
     display: flex;
-    font-size: 20px;
 }
 #names {
     width: 50%;
@@ -17,4 +19,9 @@
     float: right;
     text-align: right;
     margin-left: 10px;
+}
+#extras {
+    padding: 5px;
+    float: right;
+    text-align: right;
 }
