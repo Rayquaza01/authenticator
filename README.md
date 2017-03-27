@@ -7,6 +7,8 @@ The codes will appear in the toolbar icon. The copy icon after the code copies t
 
 On the options page, the pencil icon next to a site allows you to change the key for that site and the delete icon removes that site.
 
+It is worth noting that the secret keys entered are NOT encrypted and, as far as I can, tell there is no way to securely store extension data without asking the user for a password everytime the extension is used. Keep this in mind before using this extension.
+
 This addon uses [JS-OTP](https://github.com/jiangts/JS-OTP/) and [jsSHA](https://github.com/Caligatio/jsSHA) to generate the codes.  
 The icons are from [Material Design Icons](https://materialdesignicons.com/).
 
