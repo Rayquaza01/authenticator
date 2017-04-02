@@ -3,25 +3,24 @@ body {
     font-size: 20px;
 }
 #totpbox {
-    white-space: nowrap;
-    padding: 5px;
-    width: 100%;
-    float: left;
     display: flex;
+    float: left;
+    padding: 5px;
+    white-space: nowrap;
 }
 #names {
-    width: 50%;
     float: left;
     margin-right: 10px;
+    width: 50%;
 }
 #numbers {
-    width: 50%;
     float: right;
-    text-align: right;
     margin-left: 10px;
+    text-align: right;
+    width: 50%;
 }
 #extras {
-    padding: 5px;
     float: right;
-    text-align: right;
+    padding: 5px;
+    text-align: right
 }

@@ -12,11 +12,21 @@ function copyItem(ele) {
         document.execCommand("copy");
     });
 }
+function reloadTOTP() {
+    var codes = document.getElementsByClassName("timecode");
+    for (var i = 0; i < codes.length; i++) {
+        var totp = new jsOTP.totp();
+        var timecode = totp.getOtp(codes[i].id);
+        codes[i].innerText = timecode;
+    }
+}
 function timeLoop() {
     var epoch = Math.round(new Date().getTime() / 1000.0);
     var countDown = 30 - (epoch % 30);
     document.getElementById("ticker").innerText = countDown;
-    if (epoch % 30 == 0) reloadTOTP();
+    if (epoch % 30 === 0) {
+        reloadTOTP();
+    }
 }
 function loadTOTP() {
     browser.storage.local.get().then((res) => {
@@ -44,14 +54,6 @@ function loadTOTP() {
             }
         }
     });
-}
-function reloadTOTP() {
-    var codes = document.getElementsByClassName("timecode");
-    for (var i = 0; i < codes.length; i++) {
-        var totp = new jsOTP.totp();
-        var timecode = totp.getOtp(codes[i].id);
-        codes[i].innerText = timecode;
-    }
 }
 setInterval(timeLoop, 1000);
 document.addEventListener("DOMContentLoaded", loadTOTP);

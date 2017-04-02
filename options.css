@@ -6,8 +6,8 @@ body {
     padding: 5px;
 }
 #form, #extras {
-    display: flex;
     align-items: center;
+    display: flex;
 }
 input {
     margin-left: 10px;
@@ -20,8 +20,8 @@ input {
     float: right;
 }
 button, #import {
-    margin: 4px;
-    text-align: center;
     font-size: 20px;
     height: 30px;
+    margin: 4px;
+    text-align: center;
 }

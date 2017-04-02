@@ -7,7 +7,7 @@ function deleteKey(ele) {
 function changeKey(ele) {
     ele.addEventListener("click", () => {
         var newKey = prompt("Enter the new secret key for " + ele.className);
-        obj = {};
+        var obj = {};
         obj[ele.className] = newKey;
         browser.storage.local.set(obj);
     });
@@ -26,7 +26,7 @@ function exportSettings() {
 }
 function importSettings() {
     var reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = () => {
         var obj = JSON.parse(reader.result);
         browser.storage.local.clear();
         browser.storage.local.set(obj);
@@ -35,10 +35,10 @@ function importSettings() {
     var file = document.getElementById("import").files[0];
     reader.readAsText(file);
 }
-function restoreOptions(e) {
+function restoreOptions() {
     exportSettings();
     browser.storage.local.get().then((res) => {
-        for (i in res) {
+        for (var i in res) {
             if (res.hasOwnProperty(i)) {
                 var sites = document.getElementById("sites");
                 var name = document.createElement("span");
