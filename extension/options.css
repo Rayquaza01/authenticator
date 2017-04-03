@@ -1,23 +1,16 @@
 body {
-    font-family: monospace;
     font-size: 20px;
 }
 #form, #sites {
     padding: 5px;
 }
-#form, #extras {
+#form {
     align-items: center;
     display: flex;
 }
 input {
     margin-left: 10px;
     margin-right: 10px;
-}
-#extras {
-    float: right;
-}
-#import {
-    float: right;
 }
 button, #import {
     font-size: 20px;

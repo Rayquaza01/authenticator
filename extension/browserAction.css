@@ -24,3 +24,8 @@ body {
     padding: 5px;
     text-align: right
 }
+#hiddencopy {
+    left: -9999px;
+    position: absolute;
+    top: 0;
+}

@@ -26,12 +26,12 @@ function exportSettings() {
 }
 function importSettings() {
     var reader = new FileReader();
-    reader.onload = () => {
+    reader.addEventListener("load", () => {
         var obj = JSON.parse(reader.result);
         browser.storage.local.clear();
         browser.storage.local.set(obj);
         location.reload();
-    }
+    });
     var file = document.getElementById("import").files[0];
     reader.readAsText(file);
 }

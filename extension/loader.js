@@ -1,31 +1,24 @@
 function copyItem(ele) {
     ele.addEventListener("click", () => {
-        var target = document.createElement("textarea");
-        target.style.position = "absolute";
-        target.style.left = "-9999px";
-        target.style.top = "0";
-        target.id = "hiddencopy";
-        document.body.appendChild(target);
+        var target = document.getElementById("hiddencopy");
         target.textContent = document.getElementById(ele.className).innerText;
         target.focus();
         target.setSelectionRange(0, target.value.length);
         document.execCommand("copy");
+        target.blur();
     });
-}
-function reloadTOTP() {
-    var codes = document.getElementsByClassName("timecode");
-    for (var i = 0; i < codes.length; i++) {
-        var totp = new jsOTP.totp();
-        var timecode = totp.getOtp(codes[i].id);
-        codes[i].innerText = timecode;
-    }
 }
 function timeLoop() {
     var epoch = Math.round(new Date().getTime() / 1000.0);
     var countDown = 30 - (epoch % 30);
     document.getElementById("ticker").innerText = countDown;
     if (epoch % 30 === 0) {
-        reloadTOTP();
+        var codes = document.getElementsByClassName("timecode");
+        for (var i = 0; i < codes.length; i++) {
+            var totp = new jsOTP.totp();
+            var timecode = totp.getOtp(codes[i].id);
+            codes[i].innerText = timecode;
+        }
     }
 }
 function loadTOTP() {
