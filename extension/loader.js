@@ -31,10 +31,11 @@ function loadTOTP() {
                 var row = document.createElement("tr");
                 var name = document.createElement("td");
                 name.innerText = i;
+                name.className = "left";
                 var num = document.createElement("td");
                 var numText = document.createElement("span");
                 numText.innerText = timecode;
-                numText.className = "timecode";
+                numText.className = "timecode right";
                 numText.id = res[i];
                 var copy = document.createElement("img");
                 copy.src = "icons/content-copy.png";

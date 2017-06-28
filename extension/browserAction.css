@@ -2,9 +2,11 @@ body {
     font-family: monospace;
     font-size: 20px;
 }
-td {
-    padding-left: 5px;
+.left {
     padding-right: 5px;
+}
+.right {
+    padding-left: 5px;
 }
 #extras {
     float: right;
