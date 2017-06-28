@@ -2,22 +2,9 @@ body {
     font-family: monospace;
     font-size: 20px;
 }
-#totpbox {
-    display: flex;
-    float: left;
-    padding: 5px;
-    white-space: nowrap;
-}
-#names {
-    float: left;
-    margin-right: 10px;
-    width: 50%;
-}
-#numbers {
-    float: right;
-    margin-left: 10px;
-    text-align: right;
-    width: 50%;
+td {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 #extras {
     float: right;

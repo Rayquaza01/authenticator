@@ -27,23 +27,24 @@ function loadTOTP() {
             if (res.hasOwnProperty(i)) {
                 var totp = new jsOTP.totp();
                 var timecode = totp.getOtp(res[i]);
-                var names = document.getElementById("names");
-                var numbers = document.getElementById("numbers");
-                var name = document.createElement("span");
+                var table = document.getElementById("totpbox");
+                var row = document.createElement("tr");
+                var name = document.createElement("td");
                 name.innerText = i;
-                var num = document.createElement("span");
-                num.innerText = timecode;
-                num.className = "timecode";
-                num.id = res[i];
+                var num = document.createElement("td");
+                var numText = document.createElement("span");
+                numText.innerText = timecode;
+                numText.className = "timecode";
+                numText.id = res[i];
                 var copy = document.createElement("img");
                 copy.src = "icons/content-copy.png";
                 copy.className = res[i];
-                names.appendChild(name);
-                numbers.appendChild(num);
-                numbers.appendChild(copy);
+                row.appendChild(name);
+                num.appendChild(numText);
+                num.appendChild(copy);
+                row.appendChild(num);
                 copyItem(copy);
-                names.appendChild(document.createElement("br"));
-                numbers.appendChild(document.createElement("br"));
+                table.appendChild(row);
             }
         }
     });
