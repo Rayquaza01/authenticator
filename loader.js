@@ -1,5 +1,4 @@
 function noTooltip(e) {
-    console.log("Removed Tooltip");
     e.target.removeEventListener("mouseleave", noTooltip);
     e.target.className = "copy";
 }
@@ -23,10 +22,11 @@ function timeLoop() {
     }
 }
 function loadTOTP() {
-    for (var i in TOTPObject) {
-        if (TOTPObject.hasOwnProperty(i)) {
+    var TOTPObj = JSON.parse(TOTPObject)
+    for (var i in TOTPObj) {
+        if (TOTPObj.hasOwnProperty(i)) {
             var totp = new jsOTP.totp();
-            var timecode = totp.getOtp(TOTPObject[i]);
+            var timecode = totp.getOtp(TOTPObj[i]);
             var table = document.getElementById("totpbox");
             var row = document.createElement("tr");
             var name = document.createElement("td");
@@ -37,7 +37,7 @@ function loadTOTP() {
             var numText = document.createElement("span");
             numText.innerText = timecode;
             numText.className = "timecode right";
-            numText.dataset.key = TOTPObject[i];
+            numText.dataset.key = TOTPObj[i];
             var copyButton = document.createElement("span");
             copyButton.className = "copy";
             var copy = document.createElement("img");
