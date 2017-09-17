@@ -13,8 +13,9 @@ body {
     padding: 5px;
     text-align: right
 }
-#hiddencopy {
-    left: -9999px;
-    position: absolute;
-    top: 0;
+table {
+    width: 100%;
+}
+.align-right {
+    text-align: right;
 }
