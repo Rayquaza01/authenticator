@@ -7,11 +7,15 @@ body {
 }
 .right {
     padding-left: 5px;
+    text-align: right;
 }
 #extras {
     float: right;
     padding: 5px;
     text-align: right
+}
+table {
+    width: 100%;
 }
 #hiddencopy {
     left: -9999px;

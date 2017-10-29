@@ -4,17 +4,16 @@ body {
 #form, #sites {
     padding: 5px;
 }
-#form {
-    align-items: center;
-    display: flex;
-}
 input {
     margin-left: 10px;
     margin-right: 10px;
 }
-button, #import {
-    font-size: 20px;
-    height: 30px;
-    margin: 4px;
+table {
+    width: 100%;
+}
+td {
     text-align: center;
+}
+table input {
+    width: 100%;
 }
