@@ -1,4 +1,4 @@
-function copyTarget(ele) {
+function copyTarget() {
     var target = document.getElementById("hiddencopy");
     target.textContent = this.previousSibling.innerText;
     target.focus();
