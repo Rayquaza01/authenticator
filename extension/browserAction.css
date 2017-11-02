@@ -1,17 +1,20 @@
+img {
+    width: 1.25rem;
+    height: 1.25rem;
+}
 body {
     font-family: monospace;
-    font-size: 20px;
+    font-size: 1.75rem;
 }
 .left {
-    padding-right: 5px;
+    padding-right: 0.875rem;
 }
 .right {
-    padding-left: 5px;
+    padding-left: 0.875rem;
     text-align: right;
 }
 #extras {
     float: right;
-    padding: 5px;
     text-align: right
 }
 table {
