@@ -5,12 +5,19 @@
         <link rel="stylesheet" type="text/css" href="options.css">
     </head>
     <body>
-        <!-- <div id="form"> -->
-        <!--     Add New Site: -->
-        <!--     <input type="text" id="name" autocomplete="off" placeholder="Display Name"> -->
-        <!--     <input type="text" id="num" autocomplete="off" placeholder="Secret Key" size="64"> -->
-        <!--     <img src="icons/check.png" id="save"> -->
-        <!-- </div> -->
+        <div id="changeKey">
+            <div class="subHidden">
+                Change key for&nbsp;<span id="keyname"></span>:<br>
+                <input id="key"><br>
+                <button id="submitChange">Submit</button><button id="cancel">Cancel</button>
+            </div>
+        </div>
+        <div id="deleteSite">
+            <div class="subHidden">
+                Delete&nbsp;<span id="sitename"></span>?<br>
+                <button id="yes">Yes</button><button id="no">No</button>
+            </div>
+        </div>
         <table border="0" id="sites">
             <tr>
                 <th>Name</th>
@@ -18,11 +25,29 @@
                 <th>Delete</th>
             </tr>
         </table>
+        <table border="0">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Secret Key
+                </th>
+                <th>
+                    Submit
+                </th>
+            </tr>
+            <tr>
+                <td><input type="text" id="newName"></td>
+                <td><input type="text" id="newKey"></td>
+                <td><button id="makeNew">Add</button></td>
+            </tr>
+        </table>
         <div id="extras">
-            <a id="export" download="totp.json"><button>Export</button></a>
-            <input type="file" id="import" accept=".json">
-            <button id="importButton">Import</button>
+            Export: <a id="export" download="totp.json"><button>Export</button></a><br>
+            Import: <input type="file" id="import" accept=".json">
         </div>
+        <script src="createRow.js"></script>
         <script src="options.js"></script>
     </body>
 </html>
