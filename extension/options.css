@@ -1,14 +1,19 @@
 body {
-    font-size: 20px;
+    font-size: 1.25rem;
+    background-color: #F9F9FA
 }
 #form, #sites {
-    padding: 5px;
+    padding: 0.3125rem;
 }
 input {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 0.625rem;
+    margin-right: 0.625rem;
 }
 table {
+    border-collapse: collapse;
+    border: 1px solid #c1c1c1;
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
     width: 100%;
 }
 td {
@@ -16,4 +21,21 @@ td {
 }
 table input {
     width: 100%;
+}
+#changeKey, #deleteSite {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    z-index: 1;
+    transition: .5s;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F9F9FA;
+}
+.subHidden {
+    text-align: center;
 }
