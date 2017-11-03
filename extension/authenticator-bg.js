@@ -14,4 +14,5 @@ async function main() {
         browser.storage.local.set(res);
     }
 }
+browser.runtime.onMessage.addListener(main);
 browser.runtime.onInstalled.addListener(main);

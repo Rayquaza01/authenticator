@@ -23,7 +23,9 @@ function importSettings() {
         var obj = JSON.parse(reader.result);
         browser.storage.local.clear();
         browser.storage.local.set(obj);
-        location.reload();
+        browser.runtime.sendMessage("fixOptions").then(() => {
+            location.reload();
+        });
     });
     var file = this.files[0];
     reader.readAsText(file);
