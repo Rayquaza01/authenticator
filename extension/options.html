@@ -18,34 +18,24 @@
                 <button id="yes">Yes</button><button id="no">No</button>
             </div>
         </div>
-        <table border="0" id="sites">
-            <tr>
-                <th>Name</th>
-                <th>Secret Key</th>
-                <th>Delete</th>
-            </tr>
-        </table>
-        <table border="0">
-            <tr>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Secret Key
-                </th>
-                <th>
-                    Submit
-                </th>
-            </tr>
-            <tr>
-                <td><input type="text" id="newName"></td>
-                <td><input type="text" id="newKey"></td>
-                <td><button id="makeNew">Add</button></td>
-            </tr>
-        </table>
+
+        <h3>Configured Sites</h3>
+        <div id="sites" class="list">
+        </div>
+
+        <h3>Add Site</h3>
+        <div class="list">
+            <div class="row">
+                <input type="text" id="newName" placeholder="Name" style="flex-grow: 1;">
+                <input type="text" id="newKey" placeholder="Secret Key" style="flex-grow: 1;">
+                <button id="makeNew" class="primary">Add</button>
+            </div>
+        </div>
+
+        <h3>Extras</h3>
         <div id="extras">
-            Export: <a id="export" download="totp.json"><button>Export</button></a><br>
-            Import: <input type="file" id="import" accept=".json">
+            <a id="export" download="totp.json"><button>Export</button></a>
+            <label class="button" for="import">Import</label><input type="file" id="import" accept=".json" style="display: none;">
         </div>
         <script src="createRow.js"></script>
         <script src="options.js"></script>
