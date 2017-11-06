@@ -1,6 +1,6 @@
 async function main() {
     var res = await browser.storage.local.get();
-    if (!res.hasOwnProperty("otp_list") || typeof(res.otp_list) !== "object") {
+    if (!res.hasOwnProperty("otp_list") || !Array.isArray(res.otp_list)) {
         var otp_list = [];
         for (var item in res) {
             otp_list.push({

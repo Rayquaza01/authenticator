@@ -19,13 +19,12 @@ async function exportSettings() {
 }
 function importSettings() {
     var reader = new FileReader();
-    reader.addEventListener("load", () => {
+    reader.addEventListener("load", async () => {
         var obj = JSON.parse(reader.result);
-        browser.storage.local.clear();
-        browser.storage.local.set(obj);
-        browser.runtime.sendMessage("fixOptions").then(() => {
-            location.reload();
-        });
+        await browser.storage.local.clear();
+        await browser.storage.local.set(obj);
+        await browser.runtime.sendMessage("fixOptions");
+        location.reload();
     });
     var file = this.files[0];
     reader.readAsText(file);
