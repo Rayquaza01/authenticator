@@ -13,10 +13,42 @@ const newKey = document.getElementById("newKey");
 const makeNew = document.getElementById("makeNew");
 const exportButton = document.getElementById("export");
 const importButton = document.getElementById("import");
+
+// UI helper
+function createSiteRow(siteInfo, index) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    row.id = index;
+    sites.appendChild(row);
+
+    var elem = document.createElement('input');
+    elem.style['flex-grow'] = 1;
+    elem.type = 'text';
+    elem.value = siteInfo.name;
+    elem.addEventListener('change', changeName.bind(null, index));
+    row.appendChild(elem);
+
+    elem = document.createElement('button');
+    elem.innerText = 'Change Secret Key';
+    elem.addEventListener('click', modifySite.bind(null, index));
+    row.appendChild(elem);
+
+    elem = document.createElement('button');
+    elem.innerText = 'Delete';
+    elem.addEventListener('click', deleteKey.bind(null, index));
+    row.appendChild(elem);
+}
+
+function removeSiteRow(index) {
+    // use index+1 as the first is an empty text node
+    sites.removeChild(sites.childNodes[index+1]);
+}
+
 async function exportSettings() {
     var res = await browser.storage.local.get();
     exportButton.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
 }
+
 function importSettings() {
     var reader = new FileReader();
     reader.addEventListener("load", async () => {
@@ -29,53 +61,28 @@ function importSettings() {
     var file = this.files[0];
     reader.readAsText(file);
 }
+
 async function restoreOptions() {
     exportSettings();
     var res = await browser.storage.local.get("otp_list");
-    for (var item of res.otp_list) {
-        createRow([
-            {
-                element: "input",
-                type: "text",
-                text: item.name,
-                listener: ["change", changeName]
-            },
-            {
-                element: "button",
-                text: "Change Key",
-                listener: ["click", modifySite]
-            },
-            {
-                element: "button",
-                text: "Delete",
-                listener: ["click", deleteKey]
-            }
-        ], sites);
-    }
+    res.otp_list.forEach(createSiteRow);
 }
-function getRowIndex(element) {
-    return [...sites.children[0].children].indexOf(element.parentNode.parentNode) - 1;
-}
-async function changeName() {
+
+async function changeName(index, event) {
+    console.log(arguments)
     var res = await browser.storage.local.get("otp_list");
-    var index = getRowIndex(this);
-    console.log(index);
-    if (index > -1) {
-        res.otp_list[index].name = this.value;
-        browser.storage.local.set(res);
-    }
+    res.otp_list[index].name = event.target.value;
+    browser.storage.local.set(res);
 }
-async function modifySite() {
+async function modifySite(index) {
     var res = await browser.storage.local.get("otp_list");
-    var index = getRowIndex(this);
     keyname.innerText = res.otp_list[index].name;
     submitChange.dataset.index = index;
     key.focus();
     changeKey.style.width = "100%";
 }
-async function deleteKey() {
+async function deleteKey(index) {
     var res = await browser.storage.local.get("otp_list");
-    var index = getRowIndex(this);
     sitename.innerText = res.otp_list[index].name;
     yes.dataset.index = index;
     deleteSite.style.width = "100%";
@@ -86,9 +93,9 @@ function closeOverlays() {
 }
 async function removeSite() {
     var res = await browser.storage.local.get("otp_list");
-    res.otp_list.splice(this.dataset.index, 1)
+    res.otp_list.splice(this.dataset.index, 1);
     browser.storage.local.set(res);
-    sites.deleteRow(parseInt(this.dataset.index) + 1)
+    removeSiteRow(parseInt(this.dataset.index));
     closeOverlays();
 }
 async function submitKeyChange() {
@@ -100,29 +107,15 @@ async function submitKeyChange() {
 }
 async function addSite() {
     var res = await browser.storage.local.get("otp_list");
-    res.otp_list.push({
+    var site = {
         name: newName.value,
         key: newKey.value.replace(/\s/g, "")
-    });
+    };
+    res.otp_list.push(site);
     browser.storage.local.set(res);
-    createRow([
-        {
-            element: "input",
-            type: "text",
-            text: newName.value,
-            listener: ["change", changeName]
-        },
-        {
-            element: "button",
-            text: "Change Key",
-            listener: ["click", modifySite]
-        },
-        {
-            element: "button",
-            text: "Delete",
-            listener: ["click", deleteKey]
-        }
-    ], sites);
+
+    createSiteRow(site, res.otp_list.length-1);
+
     newName.value = "";
     newKey.value = "";
 }
