@@ -1,6 +1,7 @@
 body {
     background-color: #F9F9FA
 }
+
 #changeKey, #deleteSite {
     position: fixed;
     left: 0;
@@ -13,10 +14,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #F9F9FA;
+    background-color: rgba(0, 0, 0, .5)
 }
+
 .subHidden {
+    border-style: solid;
+    border-radius: 2px;
+    border-width: 1px;
+    border-color: rgba(12, 12, 13, 0.5);
+    padding: 50px;
     text-align: center;
+    background-color: #F9F9FA;
 }
 
 h3 {
