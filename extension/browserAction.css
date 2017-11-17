@@ -3,6 +3,7 @@ body {
     font-size: 16px;
     margin-top: 6px;
     margin-bottom: 6px;
+    overflow-y: hidden; /* prevents scrollbars on certain names */
 }
 
 img {
@@ -10,40 +11,39 @@ img {
     height: 13px;
 }
 
-.left {
-    padding-left: 12px;
-}
-
-.right {
-    padding-left: 16px;
-    padding-right: 12px;
-    text-align: right;
-}
-
-span.right {
-    padding-right: 0;
-}
-
 #extras {
     padding-right: 12px;
     text-align: right
 }
 
-table {
+#totpbox {
     width: 100%;
-    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
 }
 
-tr {
-    line-height: 25px;
+.row {
+    display: flex;
+    align-items: center;
+    height: 25px;
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
-tr:hover {
-    background-color: #f0f0f0
+.row:hover {
+    background-color: #f0f0f0;
 }
 
-tr:active {
+.row:active {
     background-color: #e8e8e8;
+}
+
+.name {
+    flex-grow: 1;
+}
+
+.timecode {
+    padding-left: 16px;
 }
 
 #hiddencopy {
