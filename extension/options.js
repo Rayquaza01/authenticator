@@ -50,6 +50,7 @@ function removeSiteRow(index) {
 
 async function exportSettings() {
     var res = await browser.storage.local.get();
+    res = decryptJSON(res, "pasword");
     exportButton.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
 }
 
@@ -131,6 +132,7 @@ async function submitKeyChange() {
         console.log("Secret Key cannot be empty");
         return;
     }
+    key.value = crypt(key.value, "password")
     res.otp_list[this.dataset.index].key = key.value.replace(/\s/g, "");
     browser.storage.local.set(res);
     key.value = "";
@@ -144,6 +146,7 @@ async function addSite() {
         console.log("Secret Key cannot be empty");
         return;
     }
+    newKey.value = crypt(newKey.value, "password")
     var res = await browser.storage.local.get("otp_list");
     var site = {
         name: newName.value,
