@@ -50,7 +50,7 @@ function removeSiteRow(index) {
 
 async function exportSettings() {
     var res = await browser.storage.local.get();
-    res = decryptJSON(res, "pasword");
+    res = decryptJSON(res, "password");
     exportButton.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
 }
 

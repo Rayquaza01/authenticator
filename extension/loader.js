@@ -68,7 +68,7 @@ function createRow(item) {
 
 async function loadTOTP() {
     var res = await browser.storage.local.get("otp_list");
-    res = decryptJSON(res, "pasword");
+    res = decryptJSON(res, "password");
     if (res.otp_list.length > 0) {
         res.otp_list.forEach(createRow);
     } else {
