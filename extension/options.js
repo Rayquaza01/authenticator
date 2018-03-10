@@ -3,6 +3,8 @@ const keyname = document.getElementById("keyname");
 const sitename = document.getElementById("sitename");
 const changeKey = document.getElementById("changeKey");
 const deleteSite = document.getElementById("deleteSite");
+const enterPassword = document.getElementById("enterPassword");
+const passwordInput = document.getElementById("password");
 const key = document.getElementById("key");
 const cancel = document.getElementById("cancel");
 const submitChange = document.getElementById("submitChange");
@@ -13,6 +15,8 @@ const newKey = document.getElementById("newKey");
 const makeNew = document.getElementById("makeNew");
 const exportButton = document.getElementById("export");
 const importButton = document.getElementById("import");
+
+var password = "";
 
 // UI helper
 function createSiteRow(siteInfo) {
@@ -50,7 +54,7 @@ function removeSiteRow(index) {
 
 async function exportSettings() {
     var res = await browser.storage.local.get();
-    res = decryptJSON(res, "password");
+    res = decryptJSON(res, password);
     exportButton.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
 }
 
@@ -59,6 +63,7 @@ function importSettings() {
     var reader = new FileReader();
     reader.addEventListener("load", async () => {
         var obj = JSON.parse(reader.result);
+        cryptJSON(obj, password);
         await browser.storage.local.clear();
         await browser.storage.local.set(obj);
         // converts old (pre 1.0.4) exports to new format when imported.
@@ -70,7 +75,13 @@ function importSettings() {
     reader.readAsText(file);
 }
 
+async function waitForPasswordInput () {
+    enterPassword.style.width = "100%";
+}
+
 async function restoreOptions() {
+    password = passwordInput.value;
+    closeOverlays();
     exportSettings();
     var res = await browser.storage.local.get("otp_list");
     if (res.otp_list.length > 0) {
@@ -107,6 +118,7 @@ async function deleteKey(row) {
 function closeOverlays() {
     changeKey.style.width = 0;
     deleteSite.style.width = 0;
+    enterPassword.style.width = 0;
 }
 
 async function removeSite() {
@@ -132,7 +144,7 @@ async function submitKeyChange() {
         console.log("Secret Key cannot be empty");
         return;
     }
-    key.value = crypt(key.value, "password")
+    key.value = crypt(key.value, password)
     res.otp_list[this.dataset.index].key = key.value.replace(/\s/g, "");
     browser.storage.local.set(res);
     key.value = "";
@@ -146,7 +158,7 @@ async function addSite() {
         console.log("Secret Key cannot be empty");
         return;
     }
-    newKey.value = crypt(newKey.value, "password")
+    newKey.value = crypt(newKey.value, password)
     var res = await browser.storage.local.get("otp_list");
     var site = {
         name: newName.value,
@@ -168,8 +180,9 @@ async function addSite() {
 no.addEventListener("click", closeOverlays);
 yes.addEventListener("click", removeSite);
 submitChange.addEventListener("click", submitKeyChange);
+submitPassword.addEventListener("click", restoreOptions);
 cancel.addEventListener("click", closeOverlays);
 makeNew.addEventListener("click", addSite);
 importButton.addEventListener("change", importSettings);
 browser.storage.onChanged.addListener(exportSettings);
-document.addEventListener("DOMContentLoaded", restoreOptions);
+document.addEventListener("DOMContentLoaded", waitForPasswordInput);

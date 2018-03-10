@@ -2,6 +2,10 @@ const totpbox = document.getElementById("totpbox");
 const hiddenCopy = document.getElementById("hiddencopy");
 const ticker = document.getElementById("ticker");
 
+const enterPassword = document.getElementById("enterPassword");
+const passwordInput = document.getElementById("password");
+const submitPassword = document.getElementById("submitPassword");
+
 function copyTarget(code, copy) {
     // move code to textarea, copy
     hiddenCopy.value = code.innerText;
@@ -67,8 +71,11 @@ function createRow(item) {
 }
 
 async function loadTOTP() {
-    var res = await browser.storage.local.get("otp_list");
-    res = decryptJSON(res, "password");
+    var res = await browser.storage.local.get();
+    res = decryptJSON(res, passwordInput.value);
+    enterPassword.style.width = 0;
+    document.body.style.width = "100%";
+    document.body.style.height = "100%";
     if (res.otp_list.length > 0) {
         res.otp_list.forEach(createRow);
     } else {
@@ -81,4 +88,4 @@ async function loadTOTP() {
 document.getElementById("settings").addEventListener("click", () => {
     browser.runtime.openOptionsPage();
 });
-document.addEventListener("DOMContentLoaded", loadTOTP);
+submitPassword.addEventListener("click", loadTOTP);

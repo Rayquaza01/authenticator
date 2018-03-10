@@ -2,7 +2,7 @@ body {
     background-color: #F9F9FA
 }
 
-#changeKey, #deleteSite {
+#changeKey, #deleteSite, #enterPassword {
     position: fixed;
     left: 0;
     top: 0;

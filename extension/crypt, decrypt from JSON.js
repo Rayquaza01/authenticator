@@ -1,13 +1,13 @@
 function decryptJSON (myJSON, password) {
   myJSON.otp_list.forEach((item) => {
-    item.key = decrypt(item.key, "password");
+    item.key = decrypt(item.key, password);
   });
   return myJSON;
 }
 
-function decryptJSON (myJSON, password) {
+function cryptJSON (myJSON, password) {
   myJSON.otp_list.forEach((item) => {
-    item.key = crypt(item.key, "password");
+    item.key = crypt(item.key, password);
   });
   return myJSON;
 }
