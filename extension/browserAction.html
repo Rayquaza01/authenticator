@@ -7,12 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="crypt.js"></script>
         <script src="crypt, decrypt from JSON.js"></script>
+        <script src="sha1.js"></script>
     </head>
     <body>
         <!-- <table id="totpbox"></table> -->
         <div id="enterPassword">
             <div class="subHidden">
-                Please enter password<br>
+                Please enter password<strong id="wrongPassword" hidden> (Wrong Password)</strong><br>
                 <input id="password"><br>
                 <button id="submitPassword">Submit</button>
             </div>

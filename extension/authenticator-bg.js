@@ -14,5 +14,11 @@ async function main() {
         browser.storage.local.set(res);
     }
 }
+
+async function installed() {
+  browser.runtime.openOptionsPage();
+  main();
+}
+
 browser.runtime.onMessage.addListener(main);
-browser.runtime.onInstalled.addListener(main);
+browser.runtime.onInstalled.addListener(installed);
