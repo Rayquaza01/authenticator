@@ -76,34 +76,27 @@ async function loadTOTP() {
   var shaObj = new jsSHA("SHA-1", "TEXT");
   shaObj.update(passwordInput.value);
   var hash = shaObj.getHash("HEX");
-  if (res.hash === undefined) {
-    browser.storage.local.set({
-      hash: hash
-    });
-    location.reload();
-  } else {
-    // Check the entered password is correct
-    if (hash == res.hash) {
-      res = decryptJSON(res, passwordInput.value);
+  // Check the entered password is correct
+  if (hash == res.hash) {
+    res = decryptJSON(res, passwordInput.value);
 
-      // Hide popup and set the popup page size to automatic
-      enterPassword.style.width = 0;
-      document.body.style.width = "100%";
-      document.body.style.height = "100%";
+    // Hide popup and set the popup page size to automatic
+    enterPassword.style.width = 0;
+    document.body.style.width = "100%";
+    document.body.style.height = "100%";
 
-      if (res.otp_list.length > 0) {
-        res.otp_list.forEach(createRow);
-      } else {
-        createRow({
-          name: "No sites configured.",
-          key: ""
-        });
-      }
-      timeLoop(); // loads timer before waiting 1s
-      setInterval(timeLoop, 1000);
+    if (res.otp_list.length > 0) {
+      res.otp_list.forEach(createRow);
     } else {
-      document.getElementById("wrongPassword").removeAttribute("hidden");
+      createRow({
+        name: "No sites configured.",
+        key: ""
+      });
     }
+    timeLoop(); // loads timer before waiting 1s
+    setInterval(timeLoop, 1000);
+  } else {
+    document.getElementById("wrongPassword").removeAttribute("hidden");
   }
 }
 
@@ -111,3 +104,10 @@ document.getElementById("settings").addEventListener("click", () => {
   browser.runtime.openOptionsPage();
 });
 submitPassword.addEventListener("click", loadTOTP);
+document.addEventListener("DOMContentLoaded", async () => {
+  var res = await browser.storage.local.get();
+  if (res.hash === undefined) {
+    browser.runtime.openOptionsPage();
+    window.close();
+  }
+});

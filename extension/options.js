@@ -89,9 +89,9 @@ async function restoreOptions() {
   var hash = shaObj.getHash("HEX");
 
   if (res.hash === undefined) {
-    browser.storage.local.set({
-      hash
-    });
+    cryptJSON(res, password);
+    res.hash = hash;
+    browser.storage.local.set(res);
     restoreOptions();
   } else {
     // Check the entered password is correct
