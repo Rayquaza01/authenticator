@@ -15,6 +15,7 @@ const newKey = document.getElementById("newKey");
 const makeNew = document.getElementById("makeNew");
 const exportButton = document.getElementById("export");
 const importButton = document.getElementById("import");
+const ChangePwButton = document.getElementById("ChangePwButton");
 
 var password = "";
 
@@ -63,7 +64,6 @@ function importSettings() {
   var reader = new FileReader();
   reader.addEventListener("load", async () => {
     var obj = JSON.parse(reader.result);
-    cryptJSON(obj, password);
     await browser.storage.local.clear();
     await browser.storage.local.set(obj);
     // converts old (pre 1.0.4) exports to new format when imported.
@@ -76,6 +76,11 @@ function importSettings() {
 }
 
 async function waitForPasswordInput() {
+  var res = await browser.storage.local.get();
+  if (res.hash === undefined) {
+    document.getElementById("new").removeAttribute("hidden");
+  }
+
   enterPassword.style.width = "100%";
 }
 
@@ -89,10 +94,9 @@ async function restoreOptions() {
   var hash = shaObj.getHash("HEX");
 
   if (res.hash === undefined) {
-    cryptJSON(res, password);
+    res = cryptJSON(res, password);
     res.hash = hash;
     browser.storage.local.set(res);
-    restoreOptions();
   } else {
     // Check the entered password is correct
     if (hash == res.hash) {
@@ -204,3 +208,12 @@ makeNew.addEventListener("click", addSite);
 importButton.addEventListener("change", importSettings);
 browser.storage.onChanged.addListener(exportSettings);
 document.addEventListener("DOMContentLoaded", waitForPasswordInput);
+ChangePwButton.addEventListener("click", async () => {
+  // Delete the password hash and decrypt storage, then reload the page to prompt for a new password
+  var res = await browser.storage.local.get();
+  res = decryptJSON(res, password);
+  res.hash = undefined;
+
+  browser.storage.local.set(res);
+  location.reload();
+});
