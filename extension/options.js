@@ -88,8 +88,8 @@ async function restoreOptions() {
   var res = await browser.storage.local.get();
   password = passwordInput.value;
 
-  // Make a SHA-1 hash of the entered password
-  var shaObj = new jsSHA("SHA-1", "TEXT");
+  // Make a SHA-256 hash of the entered password
+  var shaObj = new jsSHA("SHA-256", "TEXT");
   shaObj.update(password);
   var hash = shaObj.getHash("HEX");
 

@@ -72,8 +72,8 @@ function createRow(item) {
 
 async function loadTOTP() {
   var res = await browser.storage.local.get();
-  // Make a SHA-1 hash of the entered password
-  var shaObj = new jsSHA("SHA-1", "TEXT");
+  // Make a SHA-256 hash of the entered password
+  var shaObj = new jsSHA("SHA-256", "TEXT");
   shaObj.update(passwordInput.value);
   var hash = shaObj.getHash("HEX");
   // Check the entered password is correct
