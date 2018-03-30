@@ -10,5 +10,7 @@ It is worth noting that the secret keys entered are currnetly NOT encrypted. Enc
 # Adknowledgements
  * Using icons from [Material Design Icons](https://materialdesignicons.com/) ([OFL 1.1](http://scripts.sil.org/OFL))
  * Using [otplib](https://github.com/yeojz/otplib) ([MIT](https://opensource.org/licenses/mit))
+ * Using [crypt](https://github.com/Max1Truc/crypt) ([MIT](https://opensource.org/licenses/mit))
+ * Using [jsSHA](https://caligatio.github.io/jsSHA/) ([BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)) to hash the master password.
 
 [Link to addon page](https://addons.mozilla.org/en-US/firefox/addon/two-factor-authenticator/)
