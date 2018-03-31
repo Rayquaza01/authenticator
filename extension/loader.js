@@ -6,6 +6,8 @@ const enterPassword = document.getElementById("enterPassword");
 const passwordInput = document.getElementById("password");
 const submitPassword = document.getElementById("submitPassword");
 
+const SHA256_OF_EMPTY_STRINGS = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+
 function copyTarget(code, copy) {
   // move code to textarea, copy
   hiddenCopy.value = code.innerText;
@@ -72,13 +74,16 @@ function createRow(item) {
 
 async function loadTOTP() {
   var res = await browser.storage.local.get();
+
   // Make a SHA-256 hash of the entered password
   var shaObj = new jsSHA("SHA-256", "TEXT");
   shaObj.update(passwordInput.value);
   var hash = shaObj.getHash("HEX");
   // Check the entered password is correct
   if (hash == res.hash) {
-    res = decryptJSON(res, passwordInput.value);
+    if (hash != SHA256_OF_EMPTY_STRINGS) {
+      res = decryptJSON(res, passwordInput.value);
+    }
 
     // Hide popup and set the popup page size to automatic
     enterPassword.style.width = 0;
@@ -109,5 +114,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (res.hash === undefined) {
     browser.runtime.openOptionsPage();
     window.close();
+  }
+  if (res.hash == SHA256_OF_EMPTY_STRINGS) {
+    loadTOTP();
   }
 });

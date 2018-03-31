@@ -16,6 +16,7 @@ const makeNew = document.getElementById("makeNew");
 const exportButton = document.getElementById("export");
 const importButton = document.getElementById("import");
 const ChangePwButton = document.getElementById("ChangePwButton");
+const SHA256_OF_EMPTY_STRINGS = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
 var password = "";
 
@@ -55,7 +56,9 @@ function removeSiteRow(index) {
 
 async function exportSettings() {
   var res = await browser.storage.local.get();
-  res = decryptJSON(res, password);
+  if (password != "") {
+    res = decryptJSON(res, password);
+  }
   exportButton.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
 }
 
@@ -77,11 +80,16 @@ function importSettings() {
 
 async function waitForPasswordInput() {
   var res = await browser.storage.local.get();
-  if (res.hash === undefined) {
-    document.getElementById("new").removeAttribute("hidden");
-  }
+  if (res.hash == SHA256_OF_EMPTY_STRINGS) {
+    passwordInput.value = "";
+    restoreOptions();
+  } else {
+    if (res.hash === undefined) {
+      document.getElementById("new").removeAttribute("hidden");
+    }
 
-  enterPassword.style.width = "100%";
+    enterPassword.style.width = "100%";
+  }
 }
 
 async function restoreOptions() {
@@ -94,22 +102,27 @@ async function restoreOptions() {
   var hash = shaObj.getHash("HEX");
 
   if (res.hash === undefined) {
-    res = cryptJSON(res, password);
-    res.hash = hash;
-    browser.storage.local.set(res);
-  } else {
-    // Check the entered password is correct
-    if (hash == res.hash) {
-      closeOverlays();
-      exportSettings();
-      if (res.otp_list.length > 0) {
-        res.otp_list.forEach(createSiteRow);
-      } else {
-        sites.innerText = "No sites configured.";
-      }
+    if (hash == SHA256_OF_EMPTY_STRINGS) {
+      browser.storage.local.set({
+        hash: SHA256_OF_EMPTY_STRINGS
+      });
+
+      location.reload();
     } else {
-      document.getElementById("wrongPassword").removeAttribute("hidden");
+      res = cryptJSON(res, password);
+      res.hash = hash;
+      browser.storage.local.set(res);
     }
+  } else if (hash == res.hash) {
+    closeOverlays();
+    exportSettings();
+    if (res.otp_list.length > 0) {
+      res.otp_list.forEach(createSiteRow);
+    } else {
+      sites.innerText = "No sites configured.";
+    }
+  } else {
+    document.getElementById("wrongPassword").removeAttribute("hidden");
   }
 }
 
@@ -141,6 +154,7 @@ function closeOverlays() {
   changeKey.style.width = 0;
   deleteSite.style.width = 0;
   enterPassword.style.width = 0;
+  passwordInput.value = "";
 }
 
 async function removeSite() {
@@ -180,7 +194,9 @@ async function addSite() {
     console.log("Secret Key cannot be empty");
     return;
   }
-  newKey.value = crypt(newKey.value, password)
+  if (password != "") {
+    newKey.value = crypt(newKey.value, password);
+  }
   var res = await browser.storage.local.get("otp_list");
   var site = {
     name: newName.value,
@@ -199,6 +215,19 @@ async function addSite() {
   newKey.value = "";
 }
 
+async function changeMasterPassword() {
+  // Delete the password hash and decrypt storage, then reload the page to prompt for a new password
+  var res = await browser.storage.local.get();
+
+  if (res.hash != SHA256_OF_EMPTY_STRINGS) {
+    res = decryptJSON(res, password);
+  }
+  res.hash = undefined;
+
+  browser.storage.local.set(res);
+  location.reload();
+}
+
 no.addEventListener("click", closeOverlays);
 yes.addEventListener("click", removeSite);
 submitChange.addEventListener("click", submitKeyChange);
@@ -208,12 +237,4 @@ makeNew.addEventListener("click", addSite);
 importButton.addEventListener("change", importSettings);
 browser.storage.onChanged.addListener(exportSettings);
 document.addEventListener("DOMContentLoaded", waitForPasswordInput);
-ChangePwButton.addEventListener("click", async () => {
-  // Delete the password hash and decrypt storage, then reload the page to prompt for a new password
-  var res = await browser.storage.local.get();
-  res = decryptJSON(res, password);
-  res.hash = undefined;
-
-  browser.storage.local.set(res);
-  location.reload();
-});
+ChangePwButton.addEventListener("click", changeMasterPassword);
