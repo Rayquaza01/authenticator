@@ -5,7 +5,7 @@ body {
     margin-bottom: 6px;
     overflow-y: hidden; /* prevents scrollbars on certain names */
     width: 400px;
-    height: 250px
+    height: 250px;
 }
 
 img {
@@ -59,9 +59,8 @@ img {
     left: 0;
     top: 0;
     height: 100%;
-    width: 100%;
+    width: 0;
     z-index: 1;
-    transition: .5s;
     overflow-x: hidden;
     display: flex;
     justify-content: center;

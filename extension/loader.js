@@ -85,7 +85,9 @@ async function loadTOTP() {
       res = decryptJSON(res, passwordInput.value);
     }
 
-    // Hide popup and set the popup page size to automatic
+    // Hides password input popup with a transition
+    // and sets the popup page size to automatic
+    enterPassword.style.transition = "0.5s";
     enterPassword.style.width = 0;
     document.body.style.width = "100%";
     document.body.style.height = "100%";
@@ -117,5 +119,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   if (res.hash == SHA256_OF_EMPTY_STRINGS) {
     loadTOTP();
+  } else {
+    enterPassword.style.width = "100%";
+    document.body.style.width = "400";
+    document.body.style.height = "250";
   }
 });
