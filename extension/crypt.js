@@ -2,7 +2,7 @@
 // Source available on GitHub at https://GitHub.com/Max1Truc/crypt
 // It's under the MIT License
 
-function crypt (message, password) {
+function crypt(message, password) {
   // initialize the crypted message var
   var crypted = '';
   // crypt each letter
@@ -17,7 +17,7 @@ function crypt (message, password) {
   return crypted;
 }
 
-function decrypt (cryptedMessage, password) {
+function decrypt(cryptedMessage, password) {
   // initialize the decrypted message var
   var decrypted = '';
   // decrypt each letter
