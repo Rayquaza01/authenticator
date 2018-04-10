@@ -16,6 +16,9 @@ const makeNew = document.getElementById("makeNew");
 const exportButton = document.getElementById("export");
 const importButton = document.getElementById("import");
 const ChangePwButton = document.getElementById("ChangePwButton");
+const ChangeFontColorBtn = document.getElementById("ChangeFontColorBtn");
+const ChangeBackgroundColorBtn = document.getElementById("ChangeBackgroundColorBtn");
+const ResetColorsBtn = document.getElementById("resetColors");
 const SHA256_OF_EMPTY_STRINGS = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
 var password = "";
@@ -87,8 +90,28 @@ async function waitForPasswordInput() {
     if (res.hash === undefined) {
       document.getElementById("new").removeAttribute("hidden");
     }
-
     enterPassword.style.width = "100%";
+  }
+
+  if (res.fontColor != undefined) {
+    ChangeFontColorBtn.value = res.fontColor;
+
+    Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using .forEach
+      .forEach((el) => {
+        el.style.color = res.fontColor;
+      });
+  } else {
+    ChangeFontColorBtn.value = "#000000";
+  }
+  if (res.backgroundColor != undefined) {
+    ChangeBackgroundColorBtn.value = res.backgroundColor;
+
+    Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using forEach
+      .forEach((el) => {
+        if (el.tagName != "BUTTON" && el.tagName != "A" && el.tagName != "LABEL") el.style.backgroundColor = res.backgroundColor;
+      });
+  } else {
+    ChangeBackgroundColorBtn.value = "#F9F9FA";
   }
 }
 
@@ -228,6 +251,37 @@ async function changeMasterPassword() {
   location.reload();
 }
 
+async function changeColor(event) {
+  Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using .forEach
+    .forEach((el) => {
+      if (event.target.id == "ChangeFontColorBtn") {
+        el.style.color = event.target.value;
+      } else if (event.target.id == "ChangeBackgroundColorBtn" && el.tagName != "BUTTON" && el.tagName != "A" && el.tagName != "LABEL") {
+        el.style.backgroundColor = event.target.value;
+      }
+    });
+
+  if (event.type == "change") {
+    if (event.target.id == "ChangeFontColorBtn") {
+      browser.storage.local.set({
+        fontColor: event.target.value
+      });
+    } else if (event.target.id == "ChangeBackgroundColorBtn") {
+      browser.storage.local.set({
+        backgroundColor: event.target.value
+      });
+    }
+  }
+}
+
+async function resetColors() {
+  browser.storage.local.set({
+    fontColor: undefined,
+    backgroundColor: undefined
+  });
+  location.reload();
+}
+
 no.addEventListener("click", closeOverlays);
 yes.addEventListener("click", removeSite);
 submitChange.addEventListener("click", submitKeyChange);
@@ -238,3 +292,8 @@ importButton.addEventListener("change", importSettings);
 browser.storage.onChanged.addListener(exportSettings);
 document.addEventListener("DOMContentLoaded", waitForPasswordInput);
 ChangePwButton.addEventListener("click", changeMasterPassword);
+ChangeFontColorBtn.addEventListener("change", changeColor);
+ChangeFontColorBtn.addEventListener("input", changeColor);
+ChangeBackgroundColorBtn.addEventListener("change", changeColor);
+ChangeBackgroundColorBtn.addEventListener("input", changeColor);
+ResetColorsBtn.addEventListener("click", resetColors);

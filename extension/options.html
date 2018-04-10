@@ -43,12 +43,20 @@
     </div>
   </div>
 
+  <h3>Colors</h3>
+  <div id="colors">
+    <p>Font color: <input id="ChangeFontColorBtn" type="color" style="width: 45px; height: 15px;"></p>
+    <p>Background color: <input id="ChangeBackgroundColorBtn" type="color" style="width: 45px; height: 15px;"></p>
+    <button id="resetColors">Reset colors</button>
+  </div>
+
   <h3>Extras</h3>
   <div id="extras">
     <a id="export" download="totp.json"><button>Export</button></a>
     <label class="button" for="import">Import</label><input type="file" id="import" accept=".json" style="display: none;">
     <button id="ChangePwButton">Change master password</button>
   </div>
+
   <script src="options.js"></script>
 </body>
 

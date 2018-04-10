@@ -124,4 +124,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.body.style.width = "400";
     document.body.style.height = "250";
   }
+
+  if (res.fontColor != undefined) {
+    Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using .forEach
+      .forEach((el) => {
+        el.style.color = res.fontColor;
+      });
+  }
+  if (res.backgroundColor != undefined) {
+    Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using forEach
+      .forEach((el) => {
+        el.style.backgroundColor = res.backgroundColor;
+      });
+  }
 });
