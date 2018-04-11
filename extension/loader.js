@@ -6,7 +6,15 @@ const enterPassword = document.getElementById("enterPassword");
 const passwordInput = document.getElementById("password");
 const submitPassword = document.getElementById("submitPassword");
 
-const SHA256_OF_EMPTY_STRINGS = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+const extension_UUID = browser.runtime.getURL("/").split("/")[2];
+
+function hash(text) {
+  var shaObj = new jsSHA("SHA-256", "TEXT");
+  shaObj.update(text + extension_UUID);
+  var hash = shaObj.getHash("HEX");
+
+  return hash;
+}
 
 function copyTarget(code, copy) {
   // move code to textarea, copy
@@ -75,13 +83,9 @@ function createRow(item) {
 async function loadTOTP() {
   var res = await browser.storage.local.get();
 
-  // Make a SHA-256 hash of the entered password
-  var shaObj = new jsSHA("SHA-256", "TEXT");
-  shaObj.update(passwordInput.value);
-  var hash = shaObj.getHash("HEX");
   // Check the entered password is correct
-  if (hash == res.hash) {
-    if (hash != SHA256_OF_EMPTY_STRINGS) {
+  if (hash(passwordInput.value) == res.hash) {
+    if (passwordInput.value != "") {
       res = decryptJSON(res, passwordInput.value);
     }
 
@@ -111,13 +115,14 @@ document.getElementById("settings").addEventListener("click", () => {
   browser.runtime.openOptionsPage();
 });
 submitPassword.addEventListener("click", loadTOTP);
+
 document.addEventListener("DOMContentLoaded", async () => {
   var res = await browser.storage.local.get();
   if (res.hash === undefined) {
     browser.runtime.openOptionsPage();
     window.close();
   }
-  if (res.hash == SHA256_OF_EMPTY_STRINGS) {
+  if (res.hash == "") {
     loadTOTP();
   } else {
     enterPassword.style.width = "100%";

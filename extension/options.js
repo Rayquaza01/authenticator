@@ -19,9 +19,17 @@ const ChangePwButton = document.getElementById("ChangePwButton");
 const ChangeFontColorBtn = document.getElementById("ChangeFontColorBtn");
 const ChangeBackgroundColorBtn = document.getElementById("ChangeBackgroundColorBtn");
 const ResetColorsBtn = document.getElementById("resetColors");
-const SHA256_OF_EMPTY_STRINGS = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+const extension_UUID = browser.runtime.getURL("/").split("/")[2];
 
 var password = "";
+
+function hash(text) {
+  var shaObj = new jsSHA("SHA-256", "TEXT");
+  shaObj.update(text + extension_UUID);
+  var hash = shaObj.getHash("HEX");
+
+  return hash;
+}
 
 // UI helper
 function createSiteRow(siteInfo) {
@@ -59,8 +67,8 @@ function removeSiteRow(index) {
 
 async function exportSettings() {
   var res = await browser.storage.local.get();
-  if (password != "") {
-    res = decryptJSON(res, password);
+  if (passwordInput.value != "") {
+    res = decryptJSON(res, passwordInput.value);
   }
   exportButton.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
 }
@@ -83,7 +91,8 @@ function importSettings() {
 
 async function waitForPasswordInput() {
   var res = await browser.storage.local.get();
-  if (res.hash == SHA256_OF_EMPTY_STRINGS) {
+
+  if (res.hash == "") {
     passwordInput.value = "";
     restoreOptions();
   } else {
@@ -117,26 +126,22 @@ async function waitForPasswordInput() {
 
 async function restoreOptions() {
   var res = await browser.storage.local.get();
-  password = passwordInput.value;
-
-  // Make a SHA-256 hash of the entered password
-  var shaObj = new jsSHA("SHA-256", "TEXT");
-  shaObj.update(password);
-  var hash = shaObj.getHash("HEX");
+  var password = passwordInput.value;
 
   if (res.hash === undefined) {
-    if (hash == SHA256_OF_EMPTY_STRINGS) {
+    if (password == "") {
       browser.storage.local.set({
-        hash: SHA256_OF_EMPTY_STRINGS
+        hash: ""
       });
-
-      location.reload();
     } else {
-      res = cryptJSON(res, password);
-      res.hash = hash;
-      browser.storage.local.set(res);
+      browser.storage.local.set({
+        hash: hash(password),
+        otp_list: cryptJSON(res, password).otp_list
+      });
     }
-  } else if (hash == res.hash) {
+
+    closeOverlays();
+  } else if (hash(password) == res.hash) {
     closeOverlays();
     exportSettings();
     if (res.otp_list.length > 0) {
@@ -177,7 +182,6 @@ function closeOverlays() {
   changeKey.style.width = 0;
   deleteSite.style.width = 0;
   enterPassword.style.width = 0;
-  passwordInput.value = "";
 }
 
 async function removeSite() {
@@ -203,7 +207,7 @@ async function submitKeyChange() {
     console.log("Secret Key cannot be empty");
     return;
   }
-  key.value = crypt(key.value, password)
+  key.value = crypt(key.value, passwordInput)
   res.otp_list[this.dataset.index].key = key.value.replace(/\s/g, "");
   browser.storage.local.set(res);
   key.value = "";
@@ -217,8 +221,8 @@ async function addSite() {
     console.log("Secret Key cannot be empty");
     return;
   }
-  if (password != "") {
-    newKey.value = crypt(newKey.value, password);
+  if (passwordInput.value != "") {
+    newKey.value = crypt(newKey.value, passwordInput.value);
   }
   var res = await browser.storage.local.get("otp_list");
   var site = {
@@ -242,8 +246,8 @@ async function changeMasterPassword() {
   // Delete the password hash and decrypt storage, then reload the page to prompt for a new password
   var res = await browser.storage.local.get();
 
-  if (res.hash != SHA256_OF_EMPTY_STRINGS) {
-    res = decryptJSON(res, password);
+  if (res.hash != "") {
+    res = decryptJSON(res, passwordInput.value);
   }
   res.hash = undefined;
 
