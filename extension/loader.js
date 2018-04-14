@@ -6,9 +6,8 @@ const enterPassword = document.getElementById("enterPassword");
 const passwordInput = document.getElementById("password");
 const submitPassword = document.getElementById("submitPassword");
 
-const extension_UUID = browser.runtime.getURL("/").split("/")[2];
-
 function hash(text) {
+  const extension_UUID = browser.runtime.getURL("/").split("/")[2];
   var shaObj = new jsSHA("SHA-256", "TEXT");
   shaObj.update(text + extension_UUID);
   var hash = shaObj.getHash("HEX");
@@ -82,11 +81,13 @@ function createRow(item) {
 
 async function loadTOTP() {
   var res = await browser.storage.local.get();
+  var password = passwordInput.value;
+  var passwordHash = hash(password);
 
   // Check the entered password is correct
-  if (hash(passwordInput.value) == res.hash) {
-    if (passwordInput.value != "") {
-      res = decryptJSON(res, passwordInput.value);
+  if (passwordHash == res.hash) {
+    if (password != "") {
+      res = decryptJSON(res, password);
     }
 
     // Hides password input popup with a transition
@@ -122,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     browser.runtime.openOptionsPage();
     window.close();
   }
-  if (res.hash == "") {
+  if (res.hash == hash("")) {
     loadTOTP();
   } else {
     enterPassword.style.width = "100%";

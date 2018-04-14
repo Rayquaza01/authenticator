@@ -19,11 +19,9 @@ const ChangePwButton = document.getElementById("ChangePwButton");
 const ChangeFontColorBtn = document.getElementById("ChangeFontColorBtn");
 const ChangeBackgroundColorBtn = document.getElementById("ChangeBackgroundColorBtn");
 const ResetColorsBtn = document.getElementById("resetColors");
-const extension_UUID = browser.runtime.getURL("/").split("/")[2];
-
-var password = "";
 
 function hash(text) {
+  const extension_UUID = browser.runtime.getURL("/").split("/")[2];
   var shaObj = new jsSHA("SHA-256", "TEXT");
   shaObj.update(text + extension_UUID);
   var hash = shaObj.getHash("HEX");
@@ -66,10 +64,20 @@ function removeSiteRow(index) {
 }
 
 async function exportSettings() {
+  var password = passwordInput.value;
   var res = await browser.storage.local.get();
-  if (passwordInput.value != "") {
-    res = decryptJSON(res, passwordInput.value);
+
+  if (password != "") {
+    res = decryptJSON(res, password);
   }
+
+  // Permit to only export otp_list and colors settings
+  res = {
+    otp_list: res.otp_list,
+    fontColor: res.fontColor,
+    backgroundColor: res.backgroundColor
+  };
+
   exportButton.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
 }
 
@@ -92,7 +100,7 @@ function importSettings() {
 async function waitForPasswordInput() {
   var res = await browser.storage.local.get();
 
-  if (res.hash == "") {
+  if (res.hash == hash("")) {
     passwordInput.value = "";
     restoreOptions();
   } else {
@@ -127,11 +135,12 @@ async function waitForPasswordInput() {
 async function restoreOptions() {
   var res = await browser.storage.local.get();
   var password = passwordInput.value;
+  var passwordHash = hash(password);
 
   if (res.hash === undefined) {
     if (password == "") {
       browser.storage.local.set({
-        hash: ""
+        hash: hash("")
       });
     } else {
       browser.storage.local.set({
@@ -202,12 +211,16 @@ async function submitKeyChange() {
   // changes the key
   // activates when "Submit" is clicked from overlay opened by modifySite
   var res = await browser.storage.local.get("otp_list");
+  var password = passwordInput.value;
+
   if (key.value === "") {
     // prevents empty keys, which break the popup
     console.log("Secret Key cannot be empty");
     return;
   }
-  key.value = crypt(key.value, passwordInput)
+  if (password != "") {
+    key.value = crypt(key.value, password);
+  }
   res.otp_list[this.dataset.index].key = key.value.replace(/\s/g, "");
   browser.storage.local.set(res);
   key.value = "";
@@ -215,14 +228,16 @@ async function submitKeyChange() {
 }
 
 async function addSite() {
+  var password = passwordInput.value;
+
   // Adds the site to both the list and storage
   if (newKey.value === "") {
     // prevents empty keys, which break the popup
     console.log("Secret Key cannot be empty");
     return;
   }
-  if (passwordInput.value != "") {
-    newKey.value = crypt(newKey.value, passwordInput.value);
+  if (password != "") {
+    newKey.value = crypt(newKey.value, password);
   }
   var res = await browser.storage.local.get("otp_list");
   var site = {
@@ -246,7 +261,7 @@ async function changeMasterPassword() {
   // Delete the password hash and decrypt storage, then reload the page to prompt for a new password
   var res = await browser.storage.local.get();
 
-  if (res.hash != "") {
+  if (res.hash != hash("")) {
     res = decryptJSON(res, passwordInput.value);
   }
   res.hash = undefined;
