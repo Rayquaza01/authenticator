@@ -1,100 +1,100 @@
 body {
-  background-color: #F9F9FA
+    background-color: #F9F9FA
 }
 
 #changeKey, #deleteSite, #enterPassword {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 0;
-  z-index: 1;
-  transition: .5s;
-  overflow-x: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, .5)
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    z-index: 1;
+    transition: .5s;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, .5)
 }
 
 .subHidden {
-  border-style: solid;
-  border-radius: 2px;
-  border-width: 1px;
-  border-color: rgba(12, 12, 13, 0.5);
-  padding: 50px;
-  text-align: center;
-  background-color: #F9F9FA;
+    border-style: solid;
+    border-radius: 2px;
+    border-width: 1px;
+    border-color: rgba(12, 12, 13, 0.5);
+    padding: 50px;
+    text-align: center;
+    background-color: #F9F9FA;
 }
 
 h3 {
-  margin-top: 40px;
+    margin-top: 40px;
 }
 
 .list {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .row {
-  display: flex;
-  flex-grow: 1;
+    display: flex;
+    flex-grow: 1;
 }
 
 /* http://design.firefox.com/photon/components/buttons.html */
 
 button, .button {
-  display: inline-block;
-  min-width: 100px;
-  text-align: center;
-  height: 32px;
-  padding: 8px;
-  margin: 5px;
-  font-size: 13px;
-  color: rgba(12, 12, 13, 1);
-  background-color: rgba(12, 12, 13, 0.1);
-  border: none;
-  border-radius: 2px;
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
+    height: 32px;
+    padding: 8px;
+    margin: 5px;
+    font-size: 13px;
+    color: rgba(12, 12, 13, 1);
+    background-color: rgba(12, 12, 13, 0.1);
+    border: none;
+    border-radius: 2px;
 }
 
 button:hover, .button:hover {
-  background-color: rgba(12, 12, 13, 0.2);
+    background-color: rgba(12, 12, 13, 0.2);
 }
 
 button:active, .button:active {
-  background-color: rgba(12, 12, 13, 0.3);
+    background-color: rgba(12, 12, 13, 0.3);
 }
 
 button.primary {
-  color: #ffffff;
-  background-color: #0060df;
+    color: #ffffff;
+    background-color: #0060df;
 }
 
 button.primary:hover {
-  background-color: #003eaa;
+    background-color: #003eaa;
 }
 
 button.primary:active {
-  background-color: #002275;
+    background-color: #002275;
 }
 
 /* http://design.firefox.com/photon/components/input-fields.html */
 
 input {
-  height: 32px;
-  border-style: solid;
-  border-radius: 2px;
-  border-width: 1px;
-  border-color: rgba(12, 12, 13, 0.3);
-  margin: 5px;
-  padding-left: 10px;
+    height: 32px;
+    border-style: solid;
+    border-radius: 2px;
+    border-width: 1px;
+    border-color: rgba(12, 12, 13, 0.3);
+    margin: 5px;
+    padding-left: 10px;
 }
 
 input:hover {
-  border-color: rgba(12, 12, 13, 0.5);
+    border-color: rgba(12, 12, 13, 0.5);
 }
 
 input:focus {
-  border-color: rgba(12, 12, 13, 0.5);
+    border-color: rgba(12, 12, 13, 0.5);
 }
