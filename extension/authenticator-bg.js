@@ -1,8 +1,13 @@
 async function main() {
     let res = await browser.storage.local.get();
+    defaultValues(res, {
+        otp_list: [],
+        fontColor: "000000",
+        backgroundColor: "FFFFFF"
+    });
     if (!res.hasOwnProperty("otp_list") || !Array.isArray(res.otp_list)) {
-        var otp_list = [];
-        for (var item in res) {
+        let otp_list = [];
+        for (let item in res) {
             otp_list.push({
                 name: item,
                 key: res[item],
@@ -10,7 +15,7 @@ async function main() {
             delete res[item];
         }
         res.otp_list = otp_list;
-        browser.storage.local.clear();
+        await browser.storage.local.clear();
         browser.storage.local.set(res);
     }
 }

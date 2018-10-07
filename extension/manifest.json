@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Two Factor Authenticator",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "Generates TOTPs for 2 factor authentication",
   "applications": {
     "gecko": {
@@ -16,7 +16,7 @@
     "storage"
   ],
   "background": {
-    "scripts": ["authenticator-bg.js"]
+      "scripts": ["webext_utilities.js" ,"authenticator-bg.js"]
   },
   "options_ui": {
     "page": "options.html",
