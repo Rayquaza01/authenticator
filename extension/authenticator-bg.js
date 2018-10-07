@@ -2,8 +2,9 @@ async function main() {
     let res = await browser.storage.local.get();
     defaultValues(res, {
         otp_list: [],
-        fontColor: "000000",
-        backgroundColor: "FFFFFF"
+        fontColor: "#000000",
+        backgroundColor: "#FFFFFF",
+        hash: undefined
     });
     if (!res.hasOwnProperty("otp_list") || !Array.isArray(res.otp_list)) {
         let otp_list = [];

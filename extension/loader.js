@@ -1,10 +1,11 @@
-const totpbox = document.getElementById("totpbox");
-const hiddenCopy = document.getElementById("hiddencopy");
-const ticker = document.getElementById("ticker");
-
-const enterPassword = document.getElementById("enterPassword");
-const passwordInput = document.getElementById("password");
-const submitPassword = document.getElementById("submitPassword");
+const DOM = generateElementsVariable([
+    "totpbox",
+    "hiddencopy",
+    "ticker",
+    "enterPassword",
+    "password",
+    "submitPassword",
+]);
 
 function hash(text) {
     const extension_UUID = browser.runtime.getURL("/").split("/")[2];
@@ -17,11 +18,11 @@ function hash(text) {
 
 function copyTarget(code, copy) {
     // move code to textarea, copy
-    hiddenCopy.value = code.innerText;
-    hiddenCopy.focus();
-    hiddenCopy.setSelectionRange(0, hiddenCopy.value.length);
+    DOM.hiddencopy.value = code.innerText;
+    DOM.hiddencopy.focus();
+    DOM.hiddencopy.setSelectionRange(0, DOM.hiddencopy.value.length);
     document.execCommand("copy");
-    hiddenCopy.blur();
+    DOM.hiddencopy.blur();
     // Change icon from copy to check for 1s as visual feedback
     copy.src = "icons/check.svg";
     setTimeout(() => {
@@ -33,7 +34,7 @@ function timeLoop() {
     // from https://github.com/yeojz/otplib/blob/gh-pages/js/app.js#L65
     var epoch = Math.floor(Date.now() / 1000);
     var countDown = epoch % 30;
-    ticker.innerText = (30 - countDown);
+    DOM.ticker.innerText = (30 - countDown);
     if (countDown === 0) {
         var codes = document.getElementsByClassName("timecode");
         for (var code of codes) {
@@ -50,7 +51,7 @@ function createRow(item) {
 
     var row = document.createElement("div");
     row.className = "row";
-    totpbox.appendChild(row);
+    DOM.totpbox.appendChild(row);
 
     var name = document.createElement("span");
     name.innerText = item.name;
@@ -81,7 +82,7 @@ function createRow(item) {
 
 async function loadTOTP() {
     var res = await browser.storage.local.get();
-    var password = passwordInput.value;
+    var password = DOM.password.value;
     var passwordHash = hash(password);
 
     // Check the entered password is correct
@@ -92,8 +93,8 @@ async function loadTOTP() {
 
         // Hides password input popup with a transition
         // and sets the popup page size to automatic
-        enterPassword.style.transition = "0.5s";
-        enterPassword.style.width = 0;
+        DOM.enterPassword.style.transition = "0.5s";
+        DOM.enterPassword.style.width = 0;
         document.body.style.width = "100%";
         document.body.style.height = "100%";
 
@@ -112,12 +113,7 @@ async function loadTOTP() {
     }
 }
 
-document.getElementById("settings").addEventListener("click", () => {
-    browser.runtime.openOptionsPage();
-});
-submitPassword.addEventListener("click", loadTOTP);
-
-document.addEventListener("DOMContentLoaded", async () => {
+async function main() {
     var res = await browser.storage.local.get();
     if (res.hash === undefined) {
         browser.runtime.openOptionsPage();
@@ -126,21 +122,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (res.hash == hash("")) {
         loadTOTP();
     } else {
-        enterPassword.style.width = "100%";
+        DOM.enterPassword.style.width = "100%";
         document.body.style.width = "400";
         document.body.style.height = "250";
     }
 
     if (res.fontColor != undefined) {
         Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using .forEach
-            .forEach((el) => {
+            .forEach(el => {
                 el.style.color = res.fontColor;
             });
     }
     if (res.backgroundColor != undefined) {
         Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using forEach
-            .forEach((el) => {
+            .forEach(el => {
                 el.style.backgroundColor = res.backgroundColor;
             });
     }
-});
+}
+
+document.getElementById("settings").addEventListener("click", () => { browser.runtime.openOptionsPage(); });
+DOM.submitPassword.addEventListener("click", loadTOTP);
+document.addEventListener("DOMContentLoaded", main);
