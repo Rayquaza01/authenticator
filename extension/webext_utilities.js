@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: 0 */
 function generateElementsVariable(list) {
     // generate an object with elements based on a list of ids
     let dom = {};

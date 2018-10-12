@@ -1,3 +1,5 @@
+/* globals generateElementsVariable jsSHA decryptJSON cryptJSON crypt */
+/* eslint no-console: 0 */
 const DOM = generateElementsVariable([
     "sites",
     "keyname",
@@ -70,7 +72,7 @@ async function exportSettings() {
     var password = DOM.password.value;
     var res = await browser.storage.local.get();
 
-    if (password != "") {
+    if (password !== "") {
         res = decryptJSON(res, password);
     }
 
@@ -103,7 +105,7 @@ function importSettings() {
 async function waitForPasswordInput() {
     let res = await browser.storage.local.get();
 
-    if (res.hash == hash("")) {
+    if (res.hash === hash("")) {
         DOM.password.value = "";
         restoreOptions();
     } else {
@@ -119,7 +121,6 @@ async function waitForPasswordInput() {
 async function restoreOptions() {
     var res = await browser.storage.local.get();
     var password = DOM.password.value;
-    var passwordHash = hash(password);
 
     if (res.hash === undefined) {
         if (password === "") {
@@ -134,7 +135,7 @@ async function restoreOptions() {
         }
 
         closeOverlays();
-    } else if (hash(password) == res.hash) {
+    } else if (hash(password) === res.hash) {
         closeOverlays();
         exportSettings();
         if (res.otp_list.length > 0) {
@@ -183,7 +184,6 @@ async function removeSite() {
     var res = await browser.storage.local.get("otp_list");
     res.otp_list.splice(this.dataset.index, 1);
     browser.storage.local.set(res);
-    console.log(this)
     removeSiteRow(parseInt(this.dataset.index));
     if (!DOM.sites.hasChildNodes()) {
         DOM.sites.innerText = "No sites configured.";
@@ -202,7 +202,7 @@ async function submitKeyChange() {
         console.log("Secret Key cannot be empty");
         return;
     }
-    if (password != "") {
+    if (password !== "") {
         DOM.key.value = crypt(DOM.key.value, password);
     }
     res.otp_list[this.dataset.index].key = DOM.key.value.replace(/\s/g, "");
@@ -220,7 +220,7 @@ async function addSite() {
         console.log("Secret Key cannot be empty");
         return;
     }
-    if (password != "") {
+    if (password !== "") {
         DOM.newKey.value = crypt(DOM.newKey.value, password);
     }
     var res = await browser.storage.local.get("otp_list");
@@ -245,7 +245,7 @@ async function changeMasterPassword() {
     // Delete the password hash and decrypt storage, then reload the page to prompt for a new password
     var res = await browser.storage.local.get();
 
-    if (res.hash != hash("")) {
+    if (res.hash !== hash("")) {
         res = decryptJSON(res, DOM.password.value);
     }
     res.hash = undefined;
@@ -255,11 +255,11 @@ async function changeMasterPassword() {
 }
 
 async function changeColor(event) {
-    if (event.target.id == "ChangeFontColorBtn") {
+    if (event.target.id === "ChangeFontColorBtn") {
         browser.storage.local.set({
             fontColor: event.target.value
         });
-    } else if (event.target.id == "ChangeBackgroundColorBtn") {
+    } else if (event.target.id === "ChangeBackgroundColorBtn") {
         browser.storage.local.set({
             backgroundColor: event.target.value
         });
@@ -293,5 +293,5 @@ DOM.ChangePwButton.addEventListener("click", changeMasterPassword);
 DOM.ChangeFontColorBtn.addEventListener("input", changeColor);
 DOM.ChangeBackgroundColorBtn.addEventListener("input", changeColor);
 DOM.resetColors.addEventListener("click", resetColors);
-DOM.key.addEventListener("keyup", enterSubmit.bind(null, submitKeyChange))
+DOM.key.addEventListener("keyup", enterSubmit.bind(null, submitKeyChange));
 DOM.password.addEventListener("keyup", enterSubmit.bind(null, restoreOptions));

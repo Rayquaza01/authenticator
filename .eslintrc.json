@@ -1,0 +1,23 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "webextensions": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": ["error", 4],
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"],
+        "curly": ["error", "all"],
+        "eqeqeq": ["error", "always"],
+        "padding-line-between-statements": ["error", {
+            "blankLine": "always",
+            "prev": "*",
+            "next": "function"
+        }]
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018
+    }
+}

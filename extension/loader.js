@@ -1,3 +1,4 @@
+/* globals generateElementsVariable jsSHA otplib decryptJSON */
 const DOM = generateElementsVariable([
     "totpbox",
     "hiddencopy",
@@ -86,8 +87,8 @@ async function loadTOTP() {
     var passwordHash = hash(password);
 
     // Check the entered password is correct
-    if (passwordHash == res.hash) {
-        if (password != "") {
+    if (passwordHash === res.hash) {
+        if (password !== "") {
             res = decryptJSON(res, password);
         }
 
@@ -119,7 +120,7 @@ async function main() {
         browser.runtime.openOptionsPage();
         window.close();
     }
-    if (res.hash == hash("")) {
+    if (res.hash === hash("")) {
         loadTOTP();
     } else {
         DOM.enterPassword.style.width = "100%";
