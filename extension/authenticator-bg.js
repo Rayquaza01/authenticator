@@ -1,3 +1,4 @@
+/* globals defaultValues */
 async function main() {
     let res = await browser.storage.local.get();
     defaultValues(res, {
