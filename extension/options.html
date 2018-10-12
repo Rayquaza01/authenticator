@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="options.css">
+        <script src="crypt.js"></script>
+        <script src="crypt, decrypt from JSON.js"></script>
+        <script src="sha256.js"></script>
     </head>
+
     <body>
         <div id="changeKey">
             <div class="subHidden">
@@ -16,6 +21,13 @@
             <div class="subHidden">
                 Delete&nbsp;<span id="sitename"></span>?<br>
                 <button id="yes">Yes</button><button id="no">No</button>
+            </div>
+        </div>
+        <div id="enterPassword">
+            <div class="subHidden">
+                Please enter <span id="new" hidden>the new </span>password<strong id="wrongPassword" hidden> (Wrong Password)</strong><br>
+                <input id="password" type="password" autofocus><br>
+                <button id="submitPassword">Submit</button>
             </div>
         </div>
 
@@ -31,11 +43,22 @@
             </div>
         </div>
 
+        <h3>Colors</h3>
+        <div id="colors">
+            <p>Font color: <input id="ChangeFontColorBtn" type="color" style="width: 45px; height: 15px;"></p>
+            <p>Background color: <input id="ChangeBackgroundColorBtn" type="color" style="width: 45px; height: 15px;"></p>
+            <button id="resetColors">Reset colors</button>
+        </div>
+
         <h3>Extras</h3>
         <div id="extras">
             <a id="export" download="totp.json"><button>Export</button></a>
             <label class="button" for="import">Import</label><input type="file" id="import" accept=".json" style="display: none;">
+            <button id="ChangePwButton">Change master password</button>
         </div>
+
+        <script src="webext_utilities.js"></script>
         <script src="options.js"></script>
     </body>
+
 </html>

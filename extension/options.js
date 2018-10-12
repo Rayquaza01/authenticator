@@ -1,24 +1,42 @@
-const sites = document.getElementById("sites");
-const keyname = document.getElementById("keyname");
-const sitename = document.getElementById("sitename");
-const changeKey = document.getElementById("changeKey");
-const deleteSite = document.getElementById("deleteSite");
-const key = document.getElementById("key");
-const cancel = document.getElementById("cancel");
-const submitChange = document.getElementById("submitChange");
-const yes = document.getElementById("yes");
-const no = document.getElementById("no");
-const newName = document.getElementById("newName");
-const newKey = document.getElementById("newKey");
-const makeNew = document.getElementById("makeNew");
-const exportButton = document.getElementById("export");
-const importButton = document.getElementById("import");
+const DOM = generateElementsVariable([
+    "sites",
+    "keyname",
+    "sitename",
+    "changeKey",
+    "deleteSite",
+    "enterPassword",
+    "password",
+    "key",
+    "cancel",
+    "submitChange",
+    "yes",
+    "no",
+    "newName",
+    "newKey",
+    "makeNew",
+    "export",
+    "import",
+    "submitPassword",
+    "ChangeFontColorBtn",
+    "ChangeBackgroundColorBtn",
+    "ChangePwButton",
+    "resetColors"
+]);
+
+function hash(text) {
+    const extension_UUID = browser.runtime.getURL("/").split("/")[2];
+    var shaObj = new jsSHA("SHA-256", "TEXT");
+    shaObj.update(text + extension_UUID);
+    var hash = shaObj.getHash("HEX");
+
+    return hash;
+}
 
 // UI helper
 function createSiteRow(siteInfo) {
     var row = document.createElement("div");
     row.className = "row";
-    sites.appendChild(row);
+    DOM.sites.appendChild(row);
 
     var elem = document.createElement("input");
     elem.style.flexGrow = 1;
@@ -41,16 +59,29 @@ function createSiteRow(siteInfo) {
 
 function getRowIndex(row) {
     // get an index given a row
-    return [...sites.childNodes].indexOf(row);
+    return [...DOM.sites.childNodes].indexOf(row);
 }
 
 function removeSiteRow(index) {
-    sites.removeChild(sites.childNodes[index]);
+    DOM.sites.removeChild(DOM.sites.childNodes[index]);
 }
 
 async function exportSettings() {
+    var password = DOM.password.value;
     var res = await browser.storage.local.get();
-    exportButton.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
+
+    if (password != "") {
+        res = decryptJSON(res, password);
+    }
+
+    // Permit to only export otp_list and colors settings
+    res = {
+        otp_list: res.otp_list,
+        fontColor: res.fontColor,
+        backgroundColor: res.backgroundColor
+    };
+
+    DOM.export.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
 }
 
 function importSettings() {
@@ -69,13 +100,50 @@ function importSettings() {
     reader.readAsText(file);
 }
 
-async function restoreOptions() {
-    exportSettings();
-    var res = await browser.storage.local.get("otp_list");
-    if (res.otp_list.length > 0) {
-        res.otp_list.forEach(createSiteRow);
+async function waitForPasswordInput() {
+    let res = await browser.storage.local.get();
+
+    if (res.hash == hash("")) {
+        DOM.password.value = "";
+        restoreOptions();
     } else {
-        sites.innerText = "No sites configured.";
+        if (res.hash === undefined) {
+            document.getElementById("new").removeAttribute("hidden");
+        }
+        DOM.enterPassword.style.width = "100%";
+    }
+    DOM.ChangeFontColorBtn.value = res.fontColor;
+    DOM.ChangeBackgroundColorBtn.value = res.backgroundColor;
+}
+
+async function restoreOptions() {
+    var res = await browser.storage.local.get();
+    var password = DOM.password.value;
+    var passwordHash = hash(password);
+
+    if (res.hash === undefined) {
+        if (password === "") {
+            browser.storage.local.set({
+                hash: hash("")
+            });
+        } else {
+            browser.storage.local.set({
+                hash: hash(password),
+                otp_list: cryptJSON(res, password).otp_list
+            });
+        }
+
+        closeOverlays();
+    } else if (hash(password) == res.hash) {
+        closeOverlays();
+        exportSettings();
+        if (res.otp_list.length > 0) {
+            res.otp_list.forEach(createSiteRow);
+        } else {
+            DOM.sites.innerText = "No sites configured.";
+        }
+    } else {
+        document.getElementById("wrongPassword").removeAttribute("hidden");
     }
 }
 
@@ -89,23 +157,24 @@ async function changeName(row, event) {
 async function modifySite(row) {
     // opens the overlay to change secret key for selected site
     var res = await browser.storage.local.get("otp_list");
-    keyname.innerText = res.otp_list[getRowIndex(row)].name;
-    submitChange.dataset.index = getRowIndex(row);
-    key.focus();
-    changeKey.style.width = "100%";
+    DOM.keyname.innerText = res.otp_list[getRowIndex(row)].name;
+    DOM.submitChange.dataset.index = getRowIndex(row);
+    DOM.key.focus();
+    DOM.changeKey.style.width = "100%";
 }
 
 async function deleteKey(row) {
     // opens overlay to delete the selected site
     var res = await browser.storage.local.get("otp_list");
-    sitename.innerText = res.otp_list[getRowIndex(row)].name;
-    yes.dataset.index = getRowIndex(row);
-    deleteSite.style.width = "100%";
+    DOM.sitename.innerText = res.otp_list[getRowIndex(row)].name;
+    DOM.yes.dataset.index = getRowIndex(row);
+    DOM.deleteSite.style.width = "100%";
 }
 
 function closeOverlays() {
-    changeKey.style.width = 0;
-    deleteSite.style.width = 0;
+    DOM.changeKey.style.width = 0;
+    DOM.deleteSite.style.width = 0;
+    DOM.enterPassword.style.width = 0;
 }
 
 async function removeSite() {
@@ -116,8 +185,8 @@ async function removeSite() {
     browser.storage.local.set(res);
     console.log(this)
     removeSiteRow(parseInt(this.dataset.index));
-    if (!sites.hasChildNodes()) {
-        sites.innerText = "No sites configured.";
+    if (!DOM.sites.hasChildNodes()) {
+        DOM.sites.innerText = "No sites configured.";
     }
     closeOverlays();
 }
@@ -126,47 +195,103 @@ async function submitKeyChange() {
     // changes the key
     // activates when "Submit" is clicked from overlay opened by modifySite
     var res = await browser.storage.local.get("otp_list");
-    if (key.value === "") {
+    var password = DOM.password.value;
+
+    if (DOM.key.value === "") {
         // prevents empty keys, which break the popup
         console.log("Secret Key cannot be empty");
         return;
     }
-    res.otp_list[this.dataset.index].key = key.value.replace(/\s/g, "");
+    if (password != "") {
+        DOM.key.value = crypt(DOM.key.value, password);
+    }
+    res.otp_list[this.dataset.index].key = DOM.key.value.replace(/\s/g, "");
     browser.storage.local.set(res);
-    key.value = "";
+    DOM.key.value = "";
     closeOverlays();
 }
 
 async function addSite() {
+    var password = DOM.password.value;
+
     // Adds the site to both the list and storage
-    if (newKey.value === "") {
+    if (DOM.newKey.value === "") {
         // prevents empty keys, which break the popup
         console.log("Secret Key cannot be empty");
         return;
     }
+    if (password != "") {
+        DOM.newKey.value = crypt(DOM.newKey.value, password);
+    }
     var res = await browser.storage.local.get("otp_list");
     var site = {
-        name: newName.value,
-        key: newKey.value.replace(/\s/g, "")
+        name: DOM.newName.value,
+        key: DOM.newKey.value.replace(/\s/g, "")
     };
     res.otp_list.push(site);
     browser.storage.local.set(res);
 
-    if (sites.innerText === "No sites configured.") {
-        sites.removeChild(sites.lastChild);
+    if (DOM.sites.innerText === "No sites configured.") {
+        DOM.sites.removeChild(DOM.sites.lastChild);
     }
 
     createSiteRow(site);
 
-    newName.value = "";
-    newKey.value = "";
+    DOM.newName.value = "";
+    DOM.newKey.value = "";
 }
 
-no.addEventListener("click", closeOverlays);
-yes.addEventListener("click", removeSite);
-submitChange.addEventListener("click", submitKeyChange);
-cancel.addEventListener("click", closeOverlays);
-makeNew.addEventListener("click", addSite);
-importButton.addEventListener("change", importSettings);
+async function changeMasterPassword() {
+    // Delete the password hash and decrypt storage, then reload the page to prompt for a new password
+    var res = await browser.storage.local.get();
+
+    if (res.hash != hash("")) {
+        res = decryptJSON(res, DOM.password.value);
+    }
+    res.hash = undefined;
+
+    await browser.storage.local.set(res);
+    location.reload();
+}
+
+async function changeColor(event) {
+    if (event.target.id == "ChangeFontColorBtn") {
+        browser.storage.local.set({
+            fontColor: event.target.value
+        });
+    } else if (event.target.id == "ChangeBackgroundColorBtn") {
+        browser.storage.local.set({
+            backgroundColor: event.target.value
+        });
+    }
+}
+
+async function resetColors() {
+    browser.storage.local.set({
+        fontColor: "000000",
+        backgroundColor: "FFFFFF"
+    });
+    location.reload();
+}
+
+function enterSubmit(callback, e) {
+    if (e.key === "Enter") {
+        callback();
+    }
+}
+
+DOM.no.addEventListener("click", closeOverlays);
+DOM.yes.addEventListener("click", removeSite);
+DOM.submitChange.addEventListener("click", submitKeyChange);
+DOM.submitPassword.addEventListener("click", restoreOptions);
+DOM.cancel.addEventListener("click", closeOverlays);
+DOM.makeNew.addEventListener("click", addSite);
+DOM.import.addEventListener("change", importSettings);
 browser.storage.onChanged.addListener(exportSettings);
-document.addEventListener("DOMContentLoaded", restoreOptions);
+document.addEventListener("DOMContentLoaded", waitForPasswordInput);
+DOM.ChangePwButton.addEventListener("click", changeMasterPassword);
+DOM.ChangeFontColorBtn.addEventListener("input", changeColor);
+DOM.ChangeBackgroundColorBtn.addEventListener("input", changeColor);
+DOM.resetColors.addEventListener("click", resetColors);
+DOM.key.addEventListener("keyup", enterSubmit.bind(null, submitKeyChange))
+DOM.password.addEventListener("keyup", enterSubmit.bind(null, restoreOptions));

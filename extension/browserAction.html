@@ -1,19 +1,34 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="browserAction.css">
         <title>Two Factor Authenticator</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="crypt.js"></script>
+        <script src="crypt, decrypt from JSON.js"></script>
+        <script src="sha256.js"></script>
     </head>
+
     <body>
         <!-- <table id="totpbox"></table> -->
+        <div id="enterPassword">
+            <div class="subHidden">
+                Please enter password<strong id="wrongPassword" hidden> (Wrong Password)</strong><br>
+                <input id="password" type="password" autofocus><br>
+                <button id="submitPassword">Submit</button>
+            </div>
+        </div>
+
         <div id="totpbox"></div>
         <div id="extras">
             <span id="ticker"></span><img src="icons/settings.svg" id="settings">
         </div>
         <textarea id="hiddencopy"></textarea>
+        <script src="webext_utilities.js"></script>
         <script src="otplib-browser.js"></script>
         <script src="loader.js"></script>
     </body>
+
 </html>

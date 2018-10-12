@@ -2,7 +2,7 @@ body {
     background-color: #F9F9FA
 }
 
-#changeKey, #deleteSite {
+#changeKey, #deleteSite, #enterPassword {
     position: fixed;
     left: 0;
     top: 0;
@@ -36,12 +36,14 @@ h3 {
     flex-direction: column;
     width: 100%;
 }
+
 .row {
     display: flex;
     flex-grow: 1;
 }
 
 /* http://design.firefox.com/photon/components/buttons.html */
+
 button, .button {
     display: inline-block;
     min-width: 100px;
@@ -55,9 +57,11 @@ button, .button {
     border: none;
     border-radius: 2px;
 }
+
 button:hover, .button:hover {
     background-color: rgba(12, 12, 13, 0.2);
 }
+
 button:active, .button:active {
     background-color: rgba(12, 12, 13, 0.3);
 }
@@ -66,14 +70,17 @@ button.primary {
     color: #ffffff;
     background-color: #0060df;
 }
+
 button.primary:hover {
     background-color: #003eaa;
 }
+
 button.primary:active {
     background-color: #002275;
 }
 
 /* http://design.firefox.com/photon/components/input-fields.html */
+
 input {
     height: 32px;
     border-style: solid;
@@ -83,9 +90,11 @@ input {
     margin: 5px;
     padding-left: 10px;
 }
+
 input:hover {
     border-color: rgba(12, 12, 13, 0.5);
 }
+
 input:focus {
     border-color: rgba(12, 12, 13, 0.5);
 }
