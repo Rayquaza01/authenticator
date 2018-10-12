@@ -1,35 +1,42 @@
 {
-  "manifest_version": 2,
-  "name": "Two Factor Authenticator",
-  "version": "2.0.0",
-  "description": "Generates TOTPs for 2 factor authentication",
-  "applications": {
-    "gecko": {
-      "id": "authenticator@r01"
+    "manifest_version": 2,
+    "name": "Two Factor Authenticator",
+    "version": "2.0.0",
+    "description": "Generates TOTPs for 2 factor authentication",
+    "applications": {
+        "gecko": {
+            "id": "authenticator@r01"
+        }
+    },
+    "icons": {
+        "48": "icons/icon-48.png",
+        "96": "icons/icon-96.png"
+    },
+    "permissions": [
+        "storage"
+    ],
+    "background": {
+        "scripts": ["webext_utilities.js" ,"authenticator-bg.js"]
+    },
+    "options_ui": {
+        "page": "options.html",
+        "browser_style": true
+    },
+    "browser_action": {
+        "browser_style": true,
+        "default_popup": "browserAction.html",
+        "default_icon": "icons/icon.svg",
+        "theme_icons": [{
+            "light": "icons/icon-light.svg",
+            "dark": "icons/icon.svg",
+            "size": 16
+        }]
+    },
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Alt+Shift+A"
+            }
+        }
     }
-  },
-  "icons": {
-    "48": "icons/icon-48.png",
-    "96": "icons/icon-96.png"
-  },
-  "permissions": [
-    "storage"
-  ],
-  "background": {
-      "scripts": ["webext_utilities.js" ,"authenticator-bg.js"]
-  },
-  "options_ui": {
-    "page": "options.html",
-    "browser_style": true
-  },
-  "browser_action": {
-    "browser_style": true,
-    "default_popup": "browserAction.html",
-    "default_icon": "icons/icon.svg",
-    "theme_icons": [{
-      "light": "icons/icon-light.svg",
-      "dark": "icons/icon.svg",
-      "size": 16
-    }]
-  }
 }
