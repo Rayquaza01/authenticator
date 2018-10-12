@@ -122,7 +122,7 @@ async function restoreOptions() {
     var passwordHash = hash(password);
 
     if (res.hash === undefined) {
-        if (password == "") {
+        if (password === "") {
             browser.storage.local.set({
                 hash: hash("")
             });
@@ -250,7 +250,7 @@ async function changeMasterPassword() {
     }
     res.hash = undefined;
 
-    browser.storage.local.set(res);
+    await browser.storage.local.set(res);
     location.reload();
 }
 
@@ -274,6 +274,12 @@ async function resetColors() {
     location.reload();
 }
 
+function enterSubmit(callback, e) {
+    if (e.key === "Enter") {
+        callback();
+    }
+}
+
 DOM.no.addEventListener("click", closeOverlays);
 DOM.yes.addEventListener("click", removeSite);
 DOM.submitChange.addEventListener("click", submitKeyChange);
@@ -287,3 +293,5 @@ DOM.ChangePwButton.addEventListener("click", changeMasterPassword);
 DOM.ChangeFontColorBtn.addEventListener("input", changeColor);
 DOM.ChangeBackgroundColorBtn.addEventListener("input", changeColor);
 DOM.resetColors.addEventListener("click", resetColors);
+DOM.key.addEventListener("keyup", enterSubmit.bind(null, submitKeyChange))
+DOM.password.addEventListener("keyup", enterSubmit.bind(null, restoreOptions));

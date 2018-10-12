@@ -139,4 +139,9 @@ async function main() {
 
 document.getElementById("settings").addEventListener("click", () => { browser.runtime.openOptionsPage(); });
 DOM.submitPassword.addEventListener("click", loadTOTP);
+DOM.password.addEventListener("keyup", key => { // submit password with enter
+    if (key.key === "Enter") {
+        loadTOTP();
+    }
+});
 document.addEventListener("DOMContentLoaded", main);
