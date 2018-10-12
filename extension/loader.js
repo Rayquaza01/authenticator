@@ -127,18 +127,14 @@ async function main() {
         document.body.style.height = "250";
     }
 
-    if (res.fontColor != undefined) {
-        Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using .forEach
-            .forEach(el => {
-                el.style.color = res.fontColor;
-            });
-    }
-    if (res.backgroundColor != undefined) {
-        Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using forEach
-            .forEach(el => {
-                el.style.backgroundColor = res.backgroundColor;
-            });
-    }
+    Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using .forEach
+        .forEach(el => {
+            el.style.color = res.fontColor;
+        });
+    Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using forEach
+        .forEach(el => {
+            el.style.backgroundColor = res.backgroundColor;
+        });
 }
 
 document.getElementById("settings").addEventListener("click", () => { browser.runtime.openOptionsPage(); });

@@ -19,6 +19,7 @@ const DOM = generateElementsVariable([
     "submitPassword",
     "ChangeFontColorBtn",
     "ChangeBackgroundColorBtn",
+    "ChangePwButton",
     "resetColors"
 ]);
 
@@ -267,8 +268,8 @@ async function changeColor(event) {
 
 async function resetColors() {
     browser.storage.local.set({
-        fontColor: "#000000",
-        backgroundColor: "#FFFFFF"
+        fontColor: "000000",
+        backgroundColor: "FFFFFF"
     });
     location.reload();
 }
