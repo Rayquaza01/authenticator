@@ -1,4 +1,5 @@
 /* globals defaultValues */
+
 async function main() {
     let res = await browser.storage.local.get();
     defaultValues(res, {
@@ -12,14 +13,14 @@ async function main() {
         for (let item in res) {
             otp_list.push({
                 name: item,
-                key: res[item],
+                key: res[item]
             });
             delete res[item];
         }
         res.otp_list = otp_list;
         await browser.storage.local.clear();
-        browser.storage.local.set(res);
     }
+    browser.storage.local.set(res);
 }
 
 async function installed() {

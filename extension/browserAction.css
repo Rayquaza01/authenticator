@@ -16,7 +16,7 @@ img {
 
 #extras {
     padding-right: 12px;
-    text-align: right
+    text-align: right;
 }
 
 #totpbox {
@@ -66,7 +66,7 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, .5)
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .subHidden {
@@ -76,10 +76,11 @@ img {
     border-color: rgba(12, 12, 13, 0.5);
     padding: 50px;
     text-align: center;
-    background-color: #F9F9FA;
+    background-color: #f9f9fa;
 }
 
-button, .button {
+button,
+.button {
     display: inline-block;
     min-width: 100px;
     text-align: center;
@@ -93,11 +94,13 @@ button, .button {
     border-radius: 2px;
 }
 
-button:hover, .button:hover {
+button:hover,
+.button:hover {
     background-color: rgba(12, 12, 13, 0.2);
 }
 
-button:active, .button:active {
+button:active,
+.button:active {
     background-color: rgba(12, 12, 13, 0.3);
 }
 

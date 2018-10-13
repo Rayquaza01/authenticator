@@ -12,11 +12,9 @@
         "48": "icons/icon-48.png",
         "96": "icons/icon-96.png"
     },
-    "permissions": [
-        "storage"
-    ],
+    "permissions": ["storage"],
     "background": {
-        "scripts": ["webext_utilities.js" ,"authenticator-bg.js"]
+        "scripts": ["webext_utilities.js", "authenticator-bg.js"]
     },
     "options_ui": {
         "page": "options.html",
@@ -26,11 +24,13 @@
         "browser_style": true,
         "default_popup": "browserAction.html",
         "default_icon": "icons/icon.svg",
-        "theme_icons": [{
-            "light": "icons/icon-light.svg",
-            "dark": "icons/icon.svg",
-            "size": 16
-        }]
+        "theme_icons": [
+            {
+                "light": "icons/icon-light.svg",
+                "dark": "icons/icon.svg",
+                "size": 16
+            }
+        ]
     },
     "commands": {
         "_execute_browser_action": {

@@ -19,8 +19,10 @@ function defaultValues(object, settings) {
 }
 
 function getContext() {
-    // return the context of the current view
-    return browser.extension.getViews({type: "popup"}).indexOf(window) > -1 ? "popup" :
-        browser.extension.getViews({type: "sidebar"}).indexOf(window) > -1 ? "sidebar" :
-            browser.extension.getViews({type: "tab"}).indexOf(window) > -1 ? "tab" : undefined;
+    for (let context of ["popup", "sidebar", "tab"]) {
+        if (browser.extension.getViews({ type: context }).indexOf(window) > -1) {
+            return context;
+        }
+    }
+    return undefined;
 }

@@ -135,6 +135,7 @@ async function restoreOptions() {
         }
 
         closeOverlays();
+        restoreOptions();
     } else if (hash(password) === res.hash) {
         closeOverlays();
         exportSettings();
@@ -268,8 +269,8 @@ async function changeColor(event) {
 
 async function resetColors() {
     browser.storage.local.set({
-        fontColor: "000000",
-        backgroundColor: "FFFFFF"
+        fontColor: "#000000",
+        backgroundColor: "#FFFFFF"
     });
     location.reload();
 }

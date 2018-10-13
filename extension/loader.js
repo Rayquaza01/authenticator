@@ -5,7 +5,7 @@ const DOM = generateElementsVariable([
     "ticker",
     "enterPassword",
     "password",
-    "submitPassword",
+    "submitPassword"
 ]);
 
 function hash(text) {
@@ -35,21 +35,22 @@ function timeLoop() {
     // from https://github.com/yeojz/otplib/blob/gh-pages/js/app.js#L65
     var epoch = Math.floor(Date.now() / 1000);
     var countDown = epoch % 30;
-    DOM.ticker.innerText = (30 - countDown);
+    DOM.ticker.innerText = 30 - countDown;
     if (countDown === 0) {
         var codes = document.getElementsByClassName("timecode");
         for (var code of codes) {
             if (code.dataset.key === "") {
                 continue;
             } else {
-                code.innerText = otplib.authenticator.generate(code.dataset.key);
+                code.innerText = otplib.authenticator.generate(
+                    code.dataset.key
+                );
             }
         }
     }
 }
 
 function createRow(item) {
-
     var row = document.createElement("div");
     row.className = "row";
     DOM.totpbox.appendChild(row);
@@ -138,9 +139,12 @@ async function main() {
         });
 }
 
-document.getElementById("settings").addEventListener("click", () => { browser.runtime.openOptionsPage(); });
+document.getElementById("settings").addEventListener("click", () => {
+    browser.runtime.openOptionsPage();
+});
 DOM.submitPassword.addEventListener("click", loadTOTP);
-DOM.password.addEventListener("keyup", key => { // submit password with enter
+DOM.password.addEventListener("keyup", key => {
+    // submit password with enter
     if (key.key === "Enter") {
         loadTOTP();
     }
