@@ -1,4 +1,10 @@
 /* eslint no-unused-vars: 0 */
+async function loadSVG(url) {
+    let svg = await fetch(url);
+    return new DOMParser().parseFromString(await svg.text(), "image/svg+xml")
+        .documentElement;
+}
+
 function generateElementsVariable(list) {
     // generate an object with elements based on a list of ids
     let dom = {};
@@ -16,13 +22,4 @@ function defaultValues(object, settings) {
         }
     }
     return object;
-}
-
-function getContext() {
-    for (let context of ["popup", "sidebar", "tab"]) {
-        if (browser.extension.getViews({ type: context }).indexOf(window) > -1) {
-            return context;
-        }
-    }
-    return undefined;
 }

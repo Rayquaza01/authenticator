@@ -1,4 +1,4 @@
-/* globals generateElementsVariable jsSHA otplib decryptJSON */
+/* globals generateElementsVariable jsSHA otplib decryptJSON loadSVG */
 const DOM = generateElementsVariable([
     "totpbox",
     "hiddencopy",
@@ -17,7 +17,7 @@ function hash(text) {
     return hash;
 }
 
-function copyTarget(code, copy) {
+async function copyTarget(code, copy) {
     // move code to textarea, copy
     DOM.hiddencopy.value = code.innerText;
     DOM.hiddencopy.focus();
@@ -25,9 +25,11 @@ function copyTarget(code, copy) {
     document.execCommand("copy");
     DOM.hiddencopy.blur();
     // Change icon from copy to check for 1s as visual feedback
-    copy.src = "icons/check.svg";
-    setTimeout(() => {
-        copy.src = "icons/content-copy.svg";
+    copy.innerText = "";
+    copy.appendChild(await loadSVG("icons/check.svg"));
+    setTimeout(async () => {
+        copy.innerText = "";
+        copy.appendChild(await loadSVG("icons/content-copy.svg"));
     }, 1000);
 }
 
@@ -42,15 +44,13 @@ function timeLoop() {
             if (code.dataset.key === "") {
                 continue;
             } else {
-                code.innerText = otplib.authenticator.generate(
-                    code.dataset.key
-                );
+                code.innerText = otplib.authenticator.generate(code.dataset.key);
             }
         }
     }
 }
 
-function createRow(item) {
+async function createRow(item) {
     var row = document.createElement("div");
     row.className = "row";
     DOM.totpbox.appendChild(row);
@@ -74,9 +74,9 @@ function createRow(item) {
     code.dataset.key = item.key;
     row.appendChild(code);
 
-    var copy = document.createElement("img");
-    copy.src = "icons/content-copy.svg";
-    copy.className = "copy";
+    var copy = document.createElement("span");
+    copy.className = "copy img";
+    copy.appendChild(await loadSVG(browser.runtime.getURL("icons/content-copy.svg")));
     row.appendChild(copy);
 
     row.addEventListener("click", copyTarget.bind(null, code, copy));
@@ -129,6 +129,9 @@ async function main() {
         document.body.style.height = "250";
     }
 
+    for (let item of document.getElementsByClassName("svg-replace")) {
+        item.appendChild(await loadSVG(item.dataset.svg));
+    }
     Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using .forEach
         .forEach(el => {
             el.style.color = res.fontColor;
