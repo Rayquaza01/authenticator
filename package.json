@@ -1,0 +1,26 @@
+{
+    "name": "authenticator",
+    "version": "1.0.0",
+    "description": "Firefox addon that generates TOTPs for 2 factor authentication",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Rayquaza01/authenticator.git"
+    },
+    "author": "Rayquaza01",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Rayquaza01/authenticator/issues"
+    },
+    "homepage": "https://github.com/Rayquaza01/authenticator#readme",
+    "devDependencies": {
+        "eslint": "^5.7.0",
+        "jssha": "^2.3.1",
+        "otplib": "^10.0.1",
+        "prettier": "^1.14.3",
+        "web-ext": "^2.9.1"
+    }
+}
