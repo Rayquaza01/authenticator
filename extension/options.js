@@ -26,7 +26,7 @@ const DOM = generateElementsVariable([
 ]);
 
 function hash(text) {
-    const extension_UUID = browser.runtime.getURL("/").split("/")[2];
+    const extension_UUID = new URL(browser.runtime.getURL("/")).hostname;
     var shaObj = new jsSHA("SHA-256", "TEXT");
     shaObj.update(text + extension_UUID);
     var hash = shaObj.getHash("HEX");

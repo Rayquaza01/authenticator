@@ -9,7 +9,7 @@ const DOM = generateElementsVariable([
 ]);
 
 function hash(text) {
-    const extension_UUID = browser.runtime.getURL("/").split("/")[2];
+    const extension_UUID = new URL(browser.runtime.getURL("/")).hostname;
     var shaObj = new jsSHA("SHA-256", "TEXT");
     shaObj.update(text + extension_UUID);
     var hash = shaObj.getHash("HEX");
@@ -132,6 +132,7 @@ async function main() {
     for (let item of document.getElementsByClassName("svg-replace")) {
         item.appendChild(await loadSVG(item.dataset.svg));
     }
+
     Array.from(document.getElementsByTagName("*")) // Use Array.from to permit using .forEach
         .forEach(el => {
             el.style.color = res.fontColor;
