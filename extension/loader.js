@@ -9,7 +9,7 @@ const DOM = generateElementsVariable([
 ]);
 
 function hash(text) {
-    const extension_UUID = new URL(browser.runtime.getURL("/")).hostname;
+    const extension_UUID = new URL(browser.runtime.getURL("loader.js")).hostname;
     var shaObj = new jsSHA("SHA-256", "TEXT");
     shaObj.update(text + extension_UUID);
     var hash = shaObj.getHash("HEX");
