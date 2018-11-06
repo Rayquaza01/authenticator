@@ -23,14 +23,7 @@
     "browser_action": {
         "browser_style": true,
         "default_popup": "browserAction.html",
-        "default_icon": "icons/icon.svg",
-        "theme_icons": [
-            {
-                "light": "icons/icon-light.svg",
-                "dark": "icons/icon.svg",
-                "size": 16
-            }
-        ]
+        "default_icon": "icons/icon.svg"
     },
     "commands": {
         "_execute_browser_action": {
