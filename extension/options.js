@@ -83,7 +83,8 @@ async function exportSettings() {
         backgroundColor: res.backgroundColor
     };
 
-    DOM.export.href = "data:text/json;charset=utf-8," + JSON.stringify(res);
+    DOM.export.href =
+        "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(res));
 }
 
 function importSettings() {
