@@ -6,10 +6,12 @@
     </head>
     <body>
         <h1>Reset Password</h1>
-        If you forgot your password, you can reset the password from this page.<br>
+        If you forgot your password, you can reset it from this page.<br>
         <b>Any secret keys saved before resetting may not be usable, and this action cannot be undone.</b><br>
         <button id="reset">Click here to reset!</button><br>
         <span hidden>The password has been removed. You can set a new password from the options page. You can close this page.</span>
+        <h2>About Encryption and Versions 1.2.0 and 1.2.1</h2>
+        Encryption was broken in versions 1.2.0 and 1.2.1. Sometimes it would be unable to decrypt secret keys correctly. If you had encryption enabled in those versions and the extension is generating incorrect keys now, please <a href="https://addons.mozilla.org/en-US/firefox/addon/two-factor-authenticator/versions/1.2.1" target="_blank">downgrade to 1.2.1</a> and disable encryption there before using a newer version, or restore your secret keys from a backup.
         <script src="sha256.js"></script>
         <script src="crypt.js"></script>
         <script src="reset.js"></script>
