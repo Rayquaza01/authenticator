@@ -3,12 +3,12 @@
 // It's under the MIT License
 
 function modulo(a, b) {
-  return a - (b * Math.floor(a / b))
+  return a - (b * Math.floor(a / b));
 }
 
 function crypt(message, password) {
   // ALPHABET, changing it changes characters which are encrypted
-  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ";
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 =";
   // initialize the crypted message var
   var crypted = '';
   // crypt each letter
@@ -25,7 +25,7 @@ function crypt(message, password) {
 
 function decrypt(cryptedMessage, password) {
   // ALPHABET, changing it changes characters which are encrypted
-  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ";
+  const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 =";
   // initialize the decrypted message var
   var decrypted = '';
   // decrypt each letter

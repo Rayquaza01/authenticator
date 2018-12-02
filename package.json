@@ -4,7 +4,7 @@
     "description": "Firefox addon that generates TOTPs for 2 factor authentication",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "web-ext build -s ./extension"
     },
     "repository": {
         "type": "git",
