@@ -116,6 +116,9 @@ async function loadTOTP() {
 }
 
 async function main() {
+    if ((await browser.runtime.getPlatformInfo()).os !== "linux") {
+        DOM.password.type = "password";
+    }
     var res = await browser.storage.local.get();
     if (res.hash === undefined) {
         browser.runtime.openOptionsPage();
