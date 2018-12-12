@@ -204,10 +204,12 @@ async function submitKeyChange() {
         console.log("Secret Key cannot be empty");
         return;
     }
+    DOM.key.value = DOM.key.value.replace(/\s/g, ""); // strip whitespace BEFORE encrypting to fix potential errors
+    res.otp_list[this.dataset.index].key = DOM.key.value;
     if (password !== "") {
         DOM.key.value = crypt(DOM.key.value, password);
     }
-    res.otp_list[this.dataset.index].key = DOM.key.value.replace(/\s/g, "");
+    res.otp_list[this.dataset.index].key = DOM.key.value;
     browser.storage.local.set(res);
     DOM.key.value = "";
     closeOverlays();
@@ -222,13 +224,14 @@ async function addSite() {
         console.log("Secret Key cannot be empty");
         return;
     }
+    DOM.newKey.value = DOM.newKey.value.replace(/\s/g, ""); // strip spaces BEFORE encrypting to fix potential errors
     if (password !== "") {
         DOM.newKey.value = crypt(DOM.newKey.value, password);
     }
     var res = await browser.storage.local.get("otp_list");
     var site = {
         name: DOM.newName.value,
-        key: DOM.newKey.value.replace(/\s/g, "")
+        key: DOM.newKey.value
     };
     res.otp_list.push(site);
     browser.storage.local.set(res);
