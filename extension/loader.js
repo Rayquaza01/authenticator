@@ -120,7 +120,7 @@ async function main() {
         DOM.password.type = "password";
     }
     var res = await browser.storage.local.get();
-    if (res.hash === undefined) {
+    if (res.hash === null) {
         browser.runtime.openOptionsPage();
         window.close();
     }

@@ -110,7 +110,7 @@ async function waitForPasswordInput() {
         DOM.password.value = "";
         restoreOptions();
     } else {
-        if (res.hash === undefined) {
+        if (res.hash === null) {
             document.getElementById("new").removeAttribute("hidden");
         }
         DOM.enterPassword.style.width = "100%";
@@ -123,7 +123,7 @@ async function restoreOptions() {
     var res = await browser.storage.local.get();
     var password = DOM.password.value;
 
-    if (res.hash === undefined) {
+    if (res.hash === null) {
         if (password === "") {
             browser.storage.local.set({
                 hash: hash("")
@@ -253,7 +253,7 @@ async function changeMasterPassword() {
     if (res.hash !== hash("")) {
         res = decryptJSON(res, DOM.password.value);
     }
-    res.hash = undefined;
+    res.hash = null;
 
     await browser.storage.local.set(res);
     location.reload();

@@ -2,11 +2,22 @@
 
 async function main() {
     let res = await browser.storage.local.get();
+    // change default hash to null to support FF52 ¯\_(ツ)_/¯
+    // (because FF52 can't store undefined)
+    if (res.hash !== undefined && typeof hash !== "string") {
+        res.hash = null;
+    }
+    // switch to non svg icon on FF52
+    if ((await browser.runtime.getBrowserInfo()).version.startsWith("52")) {
+        browser.browserAction.setIcon({
+            path: "icons/icon-96.png"
+        });
+    }
     defaultValues(res, {
         otp_list: [],
         fontColor: "#000000",
         backgroundColor: "#FFFFFF",
-        hash: undefined
+        hash: null
     });
     if (!res.hasOwnProperty("otp_list") || !Array.isArray(res.otp_list)) {
         let otp_list = [];
@@ -24,7 +35,10 @@ async function main() {
 }
 
 async function installed() {
-    browser.runtime.openOptionsPage();
+    let res = await browser.storage.local.get("hash");
+    if (res.hash === null || res.hash === undefined) {
+        browser.runtime.openOptionsPage();
+    }
     main();
 }
 
