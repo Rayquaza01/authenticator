@@ -56,6 +56,11 @@
             <a id="export" download="totp.json"><button>Export</button></a>
             <label class="button" for="import">Import</label><input type="file" id="import" accept=".json" style="display: none;">
             <button id="ChangePwButton">Change master password</button>
+            Sort By: <select id="sortOrder">
+                <option value="created">Created</option>
+                <option value="alpha">A-Z</option>
+                <option value="revalpha">Z-A</option>
+            </select>
         </div>
 
         <script src="webext_utilities.js"></script>

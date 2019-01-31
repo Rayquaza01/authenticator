@@ -82,6 +82,16 @@ async function createRow(item) {
     row.addEventListener("click", copyTarget.bind(null, code, copy));
 }
 
+function nameSort(a, b) {
+    if (a.name < b.name) {
+        return -1;
+    } else if (a.name > b.name) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 async function loadTOTP() {
     var res = await browser.storage.local.get();
     var password = DOM.password.value;
@@ -99,6 +109,17 @@ async function loadTOTP() {
         DOM.enterPassword.style.width = 0;
         document.body.style.width = "100%";
         document.body.style.height = "100%";
+
+        switch (res.sortOrder) {
+            case "alpha":
+                res.otp_list = res.otp_list.sort(nameSort);
+                break;
+            case "revalpha":
+                res.otp_list = res.otp_list.sort(nameSort).reverse();
+                break;
+            default:
+                break;
+        }
 
         if (res.otp_list.length > 0) {
             res.otp_list.forEach(createRow);

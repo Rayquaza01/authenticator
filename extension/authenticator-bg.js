@@ -2,7 +2,7 @@
 
 async function main() {
     let res = await browser.storage.local.get();
-    // change default hash to null to support FF52 ¯\_(ツ)_/¯
+    // change default hash from undefined to null to support FF52
     // (because FF52 can't store undefined)
     if (res.hash !== undefined && typeof hash !== "string") {
         res.hash = null;
@@ -17,8 +17,10 @@ async function main() {
         otp_list: [],
         fontColor: "#000000",
         backgroundColor: "#FFFFFF",
-        hash: null
+        hash: null,
+        sortOrder: "created"
     });
+    // convert from old options formatting
     if (!res.hasOwnProperty("otp_list") || !Array.isArray(res.otp_list)) {
         let otp_list = [];
         for (let item in res) {
@@ -34,9 +36,10 @@ async function main() {
     browser.storage.local.set(res);
 }
 
-async function installed() {
+async function installed(details) {
     let res = await browser.storage.local.get("hash");
-    if (res.hash === null || res.hash === undefined) {
+    // only open options page if password is undef and user is installing for the very first time
+    if ((res.hash === null || res.hash === undefined) && details.reason === "install") {
         browser.runtime.openOptionsPage();
     }
     main();

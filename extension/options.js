@@ -22,7 +22,8 @@ const DOM = generateElementsVariable([
     "ChangeFontColorBtn",
     "ChangeBackgroundColorBtn",
     "ChangePwButton",
-    "resetColors"
+    "resetColors",
+    "sortOrder"
 ]);
 
 function hash(text) {
@@ -117,6 +118,7 @@ async function waitForPasswordInput() {
     }
     DOM.ChangeFontColorBtn.value = res.fontColor;
     DOM.ChangeBackgroundColorBtn.value = res.backgroundColor;
+    DOM.sortOrder.value = res.sortOrder;
 }
 
 async function restoreOptions() {
@@ -279,6 +281,12 @@ async function resetColors() {
     location.reload();
 }
 
+function changeSort() {
+    browser.storage.local.set({
+        sortOrder: DOM.sortOrder.value
+    });
+}
+
 function enterSubmit(callback, e) {
     if (e.key === "Enter") {
         callback();
@@ -300,3 +308,4 @@ DOM.ChangeBackgroundColorBtn.addEventListener("input", changeColor);
 DOM.resetColors.addEventListener("click", resetColors);
 DOM.key.addEventListener("keyup", enterSubmit.bind(null, submitKeyChange));
 DOM.password.addEventListener("keyup", enterSubmit.bind(null, restoreOptions));
+DOM.sortOrder.addEventListener("change", changeSort);
