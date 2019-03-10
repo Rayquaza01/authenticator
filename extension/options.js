@@ -35,6 +35,11 @@ function hash(text) {
     return hash;
 }
 
+async function pseudoReload() {
+    DOM.sites.innerText = "";
+    restoreOptions();
+}
+
 // UI helper
 function createSiteRow(siteInfo) {
     var row = document.createElement("div");
@@ -55,8 +60,18 @@ function createSiteRow(siteInfo) {
     row.appendChild(elem);
 
     elem = document.createElement("button");
-    elem.innerText = "Delete";
+    elem.innerText = "Delete 🗑";
     elem.addEventListener("click", deleteKey.bind(null, row));
+    row.appendChild(elem);
+
+    elem = document.createElement("button");
+    elem.innerText = "Up ⬆️";
+    elem.addEventListener("click", moveRow.bind(null, row, -1));
+    row.appendChild(elem);
+
+    elem = document.createElement("button");
+    elem.innerText = "Down ⬇️";
+    elem.addEventListener("click", moveRow.bind(null, row, 1));
     row.appendChild(elem);
 }
 
@@ -99,6 +114,7 @@ function importSettings() {
         // calls main() in authenticator-bg.js
         await browser.runtime.sendMessage("fixOptions");
         location.reload();
+        // pseudoReload();
     });
     var file = this.files[0];
     reader.readAsText(file);
@@ -174,6 +190,18 @@ async function deleteKey(row) {
     DOM.sitename.innerText = res.otp_list[getRowIndex(row)].name;
     DOM.yes.dataset.index = getRowIndex(row);
     DOM.deleteSite.style.width = "100%";
+}
+
+async function moveRow(row, dir) {
+    let res = await browser.storage.local.get("otp_list");
+    let rowindex = getRowIndex(row);
+    let destindex = rowindex + dir;
+    if (destindex < res.otp_list.length && destindex > -1) {
+        res.otp_list.splice(destindex, 0, res.otp_list.splice(rowindex, 1)[0]);
+        await browser.storage.local.set(res);
+        pseudoReload();
+        // location.reload();
+    }
 }
 
 function closeOverlays() {
