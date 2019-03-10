@@ -4,7 +4,7 @@ async function main() {
     let res = await browser.storage.local.get();
     // change default hash from undefined to null to support FF52
     // (because FF52 can't store undefined)
-    if (res.hash !== undefined && typeof hash !== "string") {
+    if (res.hash !== undefined && typeof res.hash !== "string") {
         res.hash = null;
     }
     // switch to non svg icon on FF52
