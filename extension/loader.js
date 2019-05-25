@@ -129,8 +129,13 @@ async function loadTOTP() {
                 key: ""
             });
         }
+        // ensure that html is tall enough for scroll bars
+        document.getElementsByTagName("html")[0].style.height =
+            DOM.totpbox.clientHeight + 20 + "px";
         timeLoop(); // loads timer before waiting 1s
         setInterval(timeLoop, 1000);
+        document.body.className = "";
+        document.getElementsByTagName("html")[0].style.height = document.body.clientHeight + 10 + "px";
     } else {
         document.getElementById("wrongPassword").removeAttribute("hidden");
     }

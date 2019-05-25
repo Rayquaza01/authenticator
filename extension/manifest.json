@@ -22,7 +22,7 @@
         "open_in_tab": true
     },
     "browser_action": {
-        "browser_style": true,
+        "browser_style": false,
         "default_popup": "browserAction.html",
         "default_icon": "icons/icon.svg"
     },
