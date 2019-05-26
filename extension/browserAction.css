@@ -7,7 +7,8 @@ body {
     font-size: 16px;
     margin-top: 6px;
     margin-bottom: 6px;
-    width: 400px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 html {
@@ -20,7 +21,7 @@ html {
 }
 
 #extras {
-    padding-right: 12px;
+    padding-right: 13px;
     text-align: right;
     float: right;
     width: 100%;
@@ -36,6 +37,7 @@ html {
 .row {
     display: flex;
     align-items: center;
+    flex-direction: row;
     height: 25px;
     padding-left: 12px;
     padding-right: 12px;

@@ -107,7 +107,7 @@ async function loadTOTP() {
         // and sets the popup page size to automatic
         DOM.enterPassword.style.transition = "0.5s";
         DOM.enterPassword.style.width = 0;
-        document.body.style.width = "100%";
+        document.body.style.width = "250px";
         document.body.style.height = "100%";
 
         switch (res.sortOrder) {
@@ -129,13 +129,9 @@ async function loadTOTP() {
                 key: ""
             });
         }
-        // ensure that html is tall enough for scroll bars
-        document.getElementsByTagName("html")[0].style.height =
-            DOM.totpbox.clientHeight + 20 + "px";
         timeLoop(); // loads timer before waiting 1s
         setInterval(timeLoop, 1000);
         document.body.className = "";
-        document.getElementsByTagName("html")[0].style.height = document.body.clientHeight + 10 + "px";
     } else {
         document.getElementById("wrongPassword").removeAttribute("hidden");
     }
