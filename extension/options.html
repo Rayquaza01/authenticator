@@ -36,13 +36,18 @@
 
         <div id="sitesParent">
             <h3>Configured Sites</h3>
-            <div id="sites" class="list"></div>
             <a href="#dragdrop"><button>Drag and Drop Sort Tool</button></a>
+            Sort By: <select id="sortOrder">
+                <option value="created">Created</option>
+                <option value="alpha">A-Z</option>
+                <option value="revalpha">Z-A</option>
+            </select>
+            <div id="sites" class="list"></div>
         </div>
         <div id="ddParent">
             <h3>Sort Tool</h3>
-            <div id="dd-list"></div>
             <a href="#main"><button>Save</button></a>
+            <div id="dd-list"></div>
         </div>
 
         <h3>Add Site</h3>
@@ -66,11 +71,6 @@
             <a id="export" download="totp.json"><button>Export</button></a>
             <label class="button" for="import">Import</label><input type="file" id="import" accept=".json" style="display: none;">
             <button id="ChangePwButton">Change master password</button>
-            Sort By: <select id="sortOrder">
-                <option value="created">Created</option>
-                <option value="alpha">A-Z</option>
-                <option value="revalpha">Z-A</option>
-            </select>
         </div>
 
         <script src="webext_utilities.js"></script>

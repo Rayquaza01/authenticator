@@ -18,22 +18,25 @@
 }
 
 .dd-item {
-    margin: 5px;
+    display: flex;
+    align-items: center;
+    margin: 2px;
     border: 1px solid;
     border-radius: 25px;
+    height: 20px;
 }
 
 .dd-site {
     display: flex;
     flex-grow: 1;
-    padding: 5px;
     justify-content: center;
     cursor: move;
+    height: 20px;
 }
 
 .dd-site:hover {
     background-color: #EEEEEE;
-    border-radius: 25px
+    border-radius: 25px;
 }
 
 #save {
