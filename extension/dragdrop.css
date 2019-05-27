@@ -1,0 +1,43 @@
+#ddParent {
+    display: none;
+}
+
+.dragging {
+    border: 1px dotted !important;
+}
+
+.dragover {
+    border: 1px dotted !important;
+    margin-top: 0;
+    background-color: #BDBDBD;
+}
+
+#dd-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.dd-item {
+    margin: 5px;
+    border: 1px solid;
+    border-radius: 25px;
+}
+
+.dd-site {
+    display: flex;
+    flex-grow: 1;
+    padding: 5px;
+    justify-content: center;
+    cursor: move;
+}
+
+.dd-site:hover {
+    background-color: #EEEEEE;
+    border-radius: 25px
+}
+
+#save {
+    position: relative;
+    top: 0;
+    right: 0;
+}

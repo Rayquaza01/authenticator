@@ -9,6 +9,7 @@ body {
     margin-bottom: 6px;
     margin-left: 0;
     margin-right: 0;
+    width: 400px;
 }
 
 html {
@@ -52,7 +53,9 @@ html {
 }
 
 .name {
+    display: flex;
     flex-grow: 1;
+    text-overflow: ellipsis;
 }
 
 .timecode {

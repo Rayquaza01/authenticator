@@ -158,6 +158,7 @@ async function restoreOptions() {
     } else if (hash(password) === res.hash) {
         closeOverlays();
         exportSettings();
+        console.log(res.otp_list);
         if (res.otp_list.length > 0) {
             res.otp_list.forEach(createSiteRow);
         } else {
