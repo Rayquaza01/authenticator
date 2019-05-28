@@ -5,6 +5,7 @@ const list = document.getElementById("dd-list");
 function dragStart(e) {
     e.target.classList.add("dragging");
     e.dataTransfer.setData("text/plain", e.target.id);
+    e.dataTransfer.setDragImage(e.parentElement, 0, 0);
     e.dataTransfer.dropEffect = "move";
 }
 

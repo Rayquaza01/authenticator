@@ -34,21 +34,13 @@
             </div>
         </div>
 
-        <div id="sitesParent">
-            <h3>Configured Sites</h3>
-            <a href="#dragdrop"><button>Drag and Drop Sort Tool</button></a>
-            Sort By: <select id="sortOrder">
-                <option value="created">Created</option>
-                <option value="alpha">A-Z</option>
-                <option value="revalpha">Z-A</option>
-            </select>
-            <div id="sites" class="list"></div>
-        </div>
-        <div id="ddParent">
-            <h3>Sort Tool</h3>
-            <a href="#main"><button>Save</button></a>
-            <div id="dd-list"></div>
-        </div>
+        <h3>Configured Sites</h3>
+        <div id="sites" class="list"></div>
+        Sort By: <select id="sortOrder">
+            <option value="created">Created</option>
+            <option value="alpha">A-Z</option>
+            <option value="revalpha">Z-A</option>
+        </select>
 
         <h3>Add Site</h3>
         <div class="list">
@@ -75,7 +67,6 @@
 
         <script src="webext_utilities.js"></script>
         <script src="options.js"></script>
-        <script src="dragdrop.js"></script>
     </body>
 
 </html>

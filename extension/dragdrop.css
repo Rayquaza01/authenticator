@@ -1,7 +1,3 @@
-#ddParent {
-    display: none;
-}
-
 .dragging {
     border: 1px dotted !important;
 }
@@ -12,35 +8,19 @@
     background-color: #BDBDBD;
 }
 
-#dd-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.dd-item {
+.draggable {
     display: flex;
     align-items: center;
-    margin: 2px;
-    border: 1px solid;
-    border-radius: 25px;
-    height: 20px;
 }
 
-.dd-site {
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    cursor: move;
-    height: 20px;
-}
-
-.dd-site:hover {
+.draggable:hover {
     background-color: #EEEEEE;
-    border-radius: 25px;
 }
 
-#save {
-    position: relative;
-    top: 0;
-    right: 0;
+.displayAbove {
+    border-top: 1px solid;
+}
+
+.displayBelow {
+    border-bottom: 1px solid;
 }

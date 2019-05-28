@@ -1,4 +1,4 @@
-/* globals generateElementsVariable jsSHA decryptJSON cryptJSON crypt */
+/* globals generateElementsVariable jsSHA decryptJSON cryptJSON crypt loadSVG */
 /* eslint no-console: 0 */
 const DOM = generateElementsVariable([
     "sites",
@@ -40,11 +40,133 @@ async function pseudoReload() {
     restoreOptions();
 }
 
+function dragStart(e) {
+    e.target.classList.add("dragging");
+    e.dataTransfer.setData("text/plain", getRowIndex(e.target.parentElement));
+    e.dataTransfer.setDragImage(e.target.parentElement, 0, 0);
+    e.dataTransfer.dropEffect = "move";
+}
+
+function dragOver(e) {
+    e.preventDefault();
+    let target;
+    switch (e.target.tagName) {
+        case "svg":
+            target = e.target.parentElement;
+            break;
+        case "path":
+            target = e.target.parentElement.parentElement;
+            break;
+        default:
+            target = e.target;
+            break;
+    }
+
+    let startIndex = Number(e.dataTransfer.getData("text/plain"));
+    let hoverIndex = getRowIndex(target.parentElement);
+
+    if (startIndex < hoverIndex) {
+        target.parentElement.classList.add("displayBelow");
+    } else if (startIndex > hoverIndex) {
+        target.parentElement.classList.add("displayAbove");
+    }
+
+    e.dataTransfer.dropEffect = "move";
+    target.classList.add("dragover");
+}
+
+function dragLeave(e) {
+    e.preventDefault();
+    let target;
+    switch (e.target.tagName) {
+        case "svg":
+            target = e.target.parentElement;
+            break;
+        case "path":
+            target = e.target.parentElement.parentElement;
+            break;
+        default:
+            target = e.target;
+            break;
+    }
+    target.classList.remove("dragover");
+    target.parentElement.classList.remove("displayBelow");
+    target.parentElement.classList.remove("displayAbove");
+}
+
+async function drop(e) {
+    e.preventDefault();
+    let children = Array.from(DOM.sites.children);
+    let target;
+    switch (e.target.tagName) {
+        case "svg":
+            target = e.target.parentElement;
+            break;
+        case "path":
+            target = e.target.parentElement.parentElement;
+            break;
+        default:
+            target = e.target;
+            break;
+    }
+    target.classList.remove("dragover");
+
+    let startIndex = Number(e.dataTransfer.getData("text/plain"));
+    let endIndex = getRowIndex(target.parentElement);
+
+    // update storage
+    let res = await browser.storage.local.get();
+    res.otp_list.splice(endIndex, 0, res.otp_list.splice(startIndex, 1)[0]);
+    browser.storage.local.set(res);
+
+    // move dragged item
+    children[startIndex].firstChild.firstChild.classList.remove("dragging");
+    target.parentElement.parentElement.appendChild(children[startIndex].firstChild);
+    target.parentElement.classList.remove("displayAbove");
+    target.parentElement.classList.remove("displayBelow");
+
+    let direction;
+    // find whether to shift up or down
+    if (startIndex < endIndex) {
+        direction = "previousSibling";
+    } else if (startIndex > endIndex) {
+        direction = "nextSibling";
+    } else {
+        return;
+    }
+
+    let dropTarget = target.parentElement.parentElement;
+    // shift elements until the end or all spaces are filled
+    while (dropTarget[direction] !== null) {
+        console.log(dropTarget);
+        console.log(dropTarget.children.length);
+        if (dropTarget.children.length === 1) {
+            break;
+        }
+        dropTarget[direction].appendChild(dropTarget.firstChild);
+        dropTarget = dropTarget[direction];
+    }
+}
+
 // UI helper
-function createSiteRow(siteInfo) {
-    var row = document.createElement("div");
-    row.className = "row";
-    DOM.sites.appendChild(row);
+async function createSiteRow(siteInfo) {
+    let contRow = document.createElement("div");
+    contRow.className = "row topLevel";
+    DOM.sites.appendChild(contRow);
+
+    let row = document.createElement("div");
+    row.className = "row bottomLevel";
+    contRow.appendChild(row);
+
+    let drag = document.createElement("span");
+    drag.draggable = true;
+    drag.className = "draggable";
+    drag.addEventListener("dragstart", dragStart);
+    drag.addEventListener("dragover", dragOver);
+    drag.addEventListener("dragleave", dragLeave);
+    drag.addEventListener("drop", drop);
+    drag.appendChild(await loadSVG("icons/drag.svg"));
+    row.appendChild(drag);
 
     var elem = document.createElement("input");
     elem.style.flexGrow = 1;
@@ -77,7 +199,7 @@ function createSiteRow(siteInfo) {
 
 function getRowIndex(row) {
     // get an index given a row
-    return [...DOM.sites.childNodes].indexOf(row);
+    return Array.from(DOM.sites.children).indexOf(row.parentElement);
 }
 
 function removeSiteRow(index) {
