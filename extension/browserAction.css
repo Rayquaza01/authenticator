@@ -92,6 +92,10 @@ html {
     background-color: #f9f9fa;
 }
 
+currentSite {
+    background-color: yellow;
+}
+
 button,
 .button {
     display: inline-block;

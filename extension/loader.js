@@ -50,9 +50,17 @@ function timeLoop() {
     }
 }
 
-async function createRow(item) {
+async function createRow(tab, item) {
     var row = document.createElement("div");
     row.className = "row";
+
+    console.log(item, tab);
+    if (item.hasOwnProperty("url") && item.url !== "") {
+        if (tab.indexOf(item.url) > -1) {
+            row.style.backgroundColor = "yellow";
+        }
+    }
+
     DOM.totpbox.appendChild(row);
 
     var name = document.createElement("span");
@@ -121,10 +129,11 @@ async function loadTOTP() {
                 break;
         }
 
+        let tab = (await browser.tabs.query({currentWindow: true, active: true}))[0].url;
         if (res.otp_list.length > 0) {
-            res.otp_list.forEach(createRow);
+            res.otp_list.forEach(createRow.bind(null, tab));
         } else {
-            createRow({
+            createRow(tab, {
                 name: "No sites configured.",
                 key: ""
             });

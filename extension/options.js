@@ -15,6 +15,7 @@ const DOM = generateElementsVariable([
     "no",
     "newName",
     "newKey",
+    "newURL",
     "makeNew",
     "export",
     "import",
@@ -33,11 +34,6 @@ function hash(text) {
     var hash = shaObj.getHash("HEX");
 
     return hash;
-}
-
-async function pseudoReload() {
-    DOM.sites.innerText = "";
-    restoreOptions();
 }
 
 function dragStart(e) {
@@ -176,6 +172,16 @@ async function createSiteRow(siteInfo) {
     elem.addEventListener("change", changeName.bind(null, row));
     row.appendChild(elem);
 
+    elem = document.createElement("input");
+    elem.placeholder = "Domain";
+    if (siteInfo.hasOwnProperty("url")) {
+        elem.value = siteInfo.url;
+    } else {
+        elem.value = "";
+    }
+    elem.addEventListener("change", changeURL.bind(null, row))
+    row.appendChild(elem);
+
     elem = document.createElement("button");
     elem.innerText = "Change Secret Key";
     elem.addEventListener("click", modifySite.bind(null, row));
@@ -184,16 +190,6 @@ async function createSiteRow(siteInfo) {
     elem = document.createElement("button");
     elem.innerText = "Delete 🗑";
     elem.addEventListener("click", deleteKey.bind(null, row));
-    row.appendChild(elem);
-
-    elem = document.createElement("button");
-    elem.innerText = "Up ⬆️";
-    elem.addEventListener("click", moveRow.bind(null, row, -1));
-    row.appendChild(elem);
-
-    elem = document.createElement("button");
-    elem.innerText = "Down ⬇️";
-    elem.addEventListener("click", moveRow.bind(null, row, 1));
     row.appendChild(elem);
 }
 
@@ -291,10 +287,16 @@ async function restoreOptions() {
     }
 }
 
-async function changeName(row, event) {
+async function changeName(row, e) {
     // changes the name and saves it when editing a name textbox
-    var res = await browser.storage.local.get("otp_list");
-    res.otp_list[getRowIndex(row)].name = event.target.value;
+    let res = await browser.storage.local.get("otp_list");
+    res.otp_list[getRowIndex(row)].name = e.target.value;
+    browser.storage.local.set(res);
+}
+
+async function changeURL(row, e) {
+    let res = await browser.storage.local.get();
+    res.otp_list[getRowIndex(row)].url = e.target.value;
     browser.storage.local.set(res);
 }
 
@@ -313,18 +315,6 @@ async function deleteKey(row) {
     DOM.sitename.innerText = res.otp_list[getRowIndex(row)].name;
     DOM.yes.dataset.index = getRowIndex(row);
     DOM.deleteSite.style.width = "100%";
-}
-
-async function moveRow(row, dir) {
-    let res = await browser.storage.local.get("otp_list");
-    let rowindex = getRowIndex(row);
-    let destindex = rowindex + dir;
-    if (destindex < res.otp_list.length && destindex > -1) {
-        res.otp_list.splice(destindex, 0, res.otp_list.splice(rowindex, 1)[0]);
-        await browser.storage.local.set(res);
-        pseudoReload();
-        // location.reload();
-    }
 }
 
 function closeOverlays() {
@@ -384,7 +374,8 @@ async function addSite() {
     var res = await browser.storage.local.get("otp_list");
     var site = {
         name: DOM.newName.value,
-        key: DOM.newKey.value
+        key: DOM.newKey.value,
+        url: DOM.newURL.value
     };
     res.otp_list.push(site);
     browser.storage.local.set(res);
