@@ -51,7 +51,7 @@ function timeLoop() {
 }
 
 async function createRow(tab, item) {
-    var row = document.createElement("div");
+    var row = document.createElement("tr");
     row.className = "row";
 
     console.log(item, tab);
@@ -63,12 +63,12 @@ async function createRow(tab, item) {
 
     DOM.totpbox.appendChild(row);
 
-    var name = document.createElement("span");
+    var name = document.createElement("td");
     name.innerText = item.name;
     name.className = "name";
     row.appendChild(name);
 
-    var code = document.createElement("span");
+    var code = document.createElement("td");
     if (item.name === "") {
         code.style.padding = 0;
     }
@@ -82,10 +82,13 @@ async function createRow(tab, item) {
     code.dataset.key = item.key;
     row.appendChild(code);
 
+    var copyParent = document.createElement("td");
+    copyParent.style.width = "16px";
     var copy = document.createElement("span");
     copy.className = "copy img";
     copy.appendChild(await loadSVG(browser.runtime.getURL("icons/content-copy.svg")));
-    row.appendChild(copy);
+    copyParent.appendChild(copy);
+    row.appendChild(copyParent);
 
     row.addEventListener("click", copyTarget.bind(null, code, copy));
 }
@@ -115,7 +118,8 @@ async function loadTOTP() {
         // and sets the popup page size to automatic
         DOM.enterPassword.style.transition = "0.5s";
         DOM.enterPassword.style.width = 0;
-        document.body.style.width = "250px";
+        document.getElementsByTagName("html")[0].style.width = "270px";
+        document.body.style.width = "270px";
         document.body.style.height = "100%";
 
         switch (res.sortOrder) {
@@ -159,8 +163,8 @@ async function main() {
         loadTOTP();
     } else {
         DOM.enterPassword.style.width = "100%";
-        document.body.style.width = "400";
-        document.body.style.height = "250";
+        document.body.style.width = "400px";
+        document.body.style.height = "250px";
     }
 
     for (let item of document.getElementsByClassName("svg-replace")) {
