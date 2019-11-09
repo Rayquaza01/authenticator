@@ -6,7 +6,7 @@ This addon shows TOTPs (Timed One Time Passwords) for accounts set up with 2 Fac
 Enter the site name and secret key in the addon's options page and click the check to add a site.  
 The codes will appear in the toolbar icon. The copy icon after the code copies the code.
 
-It is worth noting that the secret keys entered are currently NOT encrypted. Encryption will be added in a later version. Keep this in mind before using this extension.
+Secret keys added to this extension are encrypted if a password is provided during setup. Please store your secret keys in another location (e.g. a password manager) just to be safe!
 
 # Acknowledgements
 
