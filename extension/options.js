@@ -189,7 +189,7 @@ async function createSiteRow(siteInfo) {
     row.appendChild(elem);
 
     elem = document.createElement("button");
-    elem.innerText = "Delete 🗑";
+    elem.innerText = "Delete";
     elem.addEventListener("click", deleteKey.bind(null, row));
     row.appendChild(elem);
 }
