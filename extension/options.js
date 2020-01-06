@@ -19,6 +19,7 @@ const DOM = generateElementsVariable([
     "makeNew",
     "export",
     "import",
+    "importInput",
     "submitPassword",
     "ChangeFontColorBtn",
     "ChangeBackgroundColorBtn",
@@ -217,8 +218,10 @@ async function exportSettings() {
         backgroundColor: res.backgroundColor
     };
 
-    DOM.export.href =
-        "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(res));
+    var a = document.createElement("a");
+    a.href = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(res));
+    a.download = "totp.json";
+    a.click();
 }
 
 function importSettings() {
@@ -275,8 +278,6 @@ async function restoreOptions() {
         restoreOptions();
     } else if (hash(password) === res.hash) {
         closeOverlays();
-        exportSettings();
-        console.log(res.otp_list);
         if (res.otp_list.length > 0) {
             res.otp_list.forEach(createSiteRow);
         } else {
@@ -441,8 +442,9 @@ DOM.submitChange.addEventListener("click", submitKeyChange);
 DOM.submitPassword.addEventListener("click", restoreOptions);
 DOM.cancel.addEventListener("click", closeOverlays);
 DOM.makeNew.addEventListener("click", addSite);
-DOM.import.addEventListener("change", importSettings);
-browser.storage.onChanged.addListener(exportSettings);
+DOM.export.addEventListener("click", exportSettings);
+DOM.import.addEventListener("click", function () { DOM.importInput.click(); });
+DOM.importInput.addEventListener("change", importSettings);
 document.addEventListener("DOMContentLoaded", waitForPasswordInput);
 DOM.ChangePwButton.addEventListener("click", changeMasterPassword);
 DOM.ChangeFontColorBtn.addEventListener("input", changeColor);
