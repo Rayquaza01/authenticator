@@ -1,25 +1,15 @@
 import crypto from "crypto";
 import { Buffer } from "buffer";
 
-function hexToBytes(hex: string): Buffer {
-    const bytes: number[] = []
-    for (let i = 0; i < hex.length; i += 2) {
-        const substring = hex.substr(i, 2);
-        bytes.push(parseInt(substring, 16));
-    }
-
-    return Buffer.from(bytes);
-}
-
 function numberToBytes(num: number): Buffer {
-    const bytes: number[] = [];
+    const bytes = Buffer.alloc(8);
 
-    for (let i = 7; i >= 0; i--) {
-        bytes[i] = num & 0xFF;
+    for (let i = 3; i >= 0; i--) {
+        bytes[4 + i] = num & 0xFF;
         num = num >> 0x8;
     }
 
-    return Buffer.from(bytes);
+    return bytes;
 }
 
 export function HOTP(key: string | Buffer, counter: number): string {
@@ -28,13 +18,12 @@ export function HOTP(key: string | Buffer, counter: number): string {
     }
 
     const counterBuffer = numberToBytes(counter);
-    console.log(counterBuffer);
 
     const hmac = crypto.createHmac("sha1", key);
 
     const digest = hmac.update(counterBuffer).digest("hex");
 
-    const HMACValue = hexToBytes(digest);
+    const HMACValue = Buffer.from(digest, "hex");
 
     // get 4 least significant bits for offset
     const offset = HMACValue[19] & 0xF;
