@@ -22,11 +22,15 @@ function numberToBytes(num: number): Buffer {
     return Buffer.from(bytes);
 }
 
-export function HOTP(key: string, counter: number): string {
+export function HOTP(key: string | Buffer, counter: number): string {
+    if (typeof key === "string") {
+        key = Buffer.from(key);
+    }
+
     const counterBuffer = numberToBytes(counter);
     console.log(counterBuffer);
 
-    const hmac = crypto.createHmac("sha1", Buffer.from(key));
+    const hmac = crypto.createHmac("sha1", key);
 
     const digest = hmac.update(counterBuffer).digest("hex");
 
