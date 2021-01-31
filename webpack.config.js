@@ -1,4 +1,5 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const copyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
@@ -6,8 +7,8 @@ module.exports = {
     mode: "development",
     entry: {
         background: __dirname + "/src/background.ts",
-        popup: __dirname + "/src/ui/popup/index.ts",
-        options: __dirname + "/src/ui/options/index.ts"
+        popup: __dirname + "/src/popup.ts",
+        options: __dirname + "/src/options.ts"
     },
     devtool: "eval-cheap-source-map",
     output: {
@@ -51,6 +52,16 @@ module.exports = {
             filename: "options.html",
             chunks: ["options"],
             cache: false
+        }),
+        new copyWebpackPlugin({
+            patterns: [
+                { from: "src/manifest.json" },
+                {
+                    from: "src/icons/",
+                    to: "icons",
+                    toType: "dir"
+                }
+            ]
         })
     ],
     optimization: {

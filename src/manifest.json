@@ -14,7 +14,7 @@
     },
     "permissions": ["storage", "tabs"],
     "background": {
-        "scripts": ["webext_utilities.js", "authenticator-bg.js"]
+        "scripts": ["background.bundle.js"]
     },
     "options_ui": {
         "page": "options.html",
@@ -23,7 +23,7 @@
     },
     "browser_action": {
         "browser_style": false,
-        "default_popup": "browserAction.html",
+        "default_popup": "popup.html",
         "default_icon": "icons/icon.svg"
     },
     "commands": {
