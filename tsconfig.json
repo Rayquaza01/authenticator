@@ -9,7 +9,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true
-  },
-  "files": ["src/OTP/HOTP.ts", "src/OTP/TOTP.ts", "src/OTP/Base32.ts"]
-  // "files": ["src/options.ts", "src/background.ts", "src/popup.ts"]
+  }
 }
