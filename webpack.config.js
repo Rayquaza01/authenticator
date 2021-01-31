@@ -4,13 +4,15 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = {
+    // mode: "production",
     mode: "development",
     entry: {
         background: __dirname + "/src/background.ts",
         popup: __dirname + "/src/popup.ts",
         options: __dirname + "/src/options.ts"
     },
-    devtool: "eval-cheap-source-map",
+    // devtool: "source-map",
+    devtool: "eval-source-map",
     output: {
         path: __dirname + "/dist",
         filename: "[name].bundle.js"
@@ -27,7 +29,7 @@ module.exports = {
     resolve: {
         extensions: [ ".ts", ".tsx", ".js", ".jsx" ],
         fallback: {
-            buffer: require.resolve("buffer/"),
+            // buffer: require.resolve("buffer/"),
             crypto: require.resolve("crypto-browserify"),
             stream: require.resolve("stream-browserify")
         },
@@ -38,8 +40,7 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
-            process: "process/browser.js",
-            Buffer: ["buffer", "Buffer"]
+            process: "process/browser.js"
         }),
         new HtmlWebpackPlugin({
             template: "src/popup.html",

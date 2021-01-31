@@ -1,8 +1,8 @@
 import crypto from "crypto";
-import { Buffer } from "buffer";
+// import { Buffer } from "buffer";
 
-function numberToBytes(num: number): Buffer {
-    const bytes = Buffer.alloc(8);
+function numberToBytes(num: number): Uint8Array {
+    const bytes = new Uint8Array(8);
 
     for (let i = 3; i >= 0; i--) {
         bytes[4 + i] = num & 0xFF;
@@ -12,9 +12,19 @@ function numberToBytes(num: number): Buffer {
     return bytes;
 }
 
-export function HOTP(key: string | Buffer, counter: number): string {
+function hexToBytes(hex: string): Uint8Array {
+    let bytes = new Uint8Array(Math.ceil(hex.length / 2));
+
+    for (let i = 0; i < bytes.length; i++) {
+        bytes[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+    }
+
+    return bytes;
+}
+
+export function HOTP(key: string | Uint8Array, counter: number): string {
     if (typeof key === "string") {
-        key = Buffer.from(key);
+        key = new TextEncoder().encode(key);
     }
 
     const counterBuffer = numberToBytes(counter);
@@ -23,7 +33,7 @@ export function HOTP(key: string | Buffer, counter: number): string {
 
     const digest = hmac.update(counterBuffer).digest("hex");
 
-    const HMACValue = Buffer.from(digest, "hex");
+    const HMACValue = hexToBytes(digest);
 
     // get 4 least significant bits for offset
     const offset = HMACValue[19] & 0xF;
