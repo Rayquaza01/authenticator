@@ -28,20 +28,9 @@ module.exports = {
     },
     resolve: {
         extensions: [ ".ts", ".tsx", ".js", ".jsx" ],
-        fallback: {
-            // buffer: require.resolve("buffer/"),
-            crypto: require.resolve("crypto-browserify"),
-            stream: require.resolve("stream-browserify")
-        },
-        alias: {
-            process: "process/browser.js"
-        }
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new webpack.ProvidePlugin({
-            process: "process/browser.js"
-        }),
         new HtmlWebpackPlugin({
             template: "src/popup.html",
             filename: "popup.html",
