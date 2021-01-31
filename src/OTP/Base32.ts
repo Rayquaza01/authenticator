@@ -18,7 +18,6 @@ export function base32Decode(encoded: string): Buffer {
     let cursor = 0;
     for (let i = 0; i < encoded.length; i++) {
         const data = BASE_32_LOOKUP.indexOf(encoded[i]) & 0x1F;
-        console.log("Encoding %i", data);
         if (data === 0x3D) { // =
             break;
         }
