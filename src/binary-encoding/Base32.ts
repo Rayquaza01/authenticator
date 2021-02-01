@@ -26,7 +26,7 @@ function write5Bits(buf: Uint8Array, cursor: number, data: number): void {
  * Encodes a buffer to a base 32 string
  * @param data Buffer to encode
  */
-function base32Encode(data: Uint8Array): string {
+export function base32Encode(data: Uint8Array): string {
     let encoded = "";
 
     return encoded;
@@ -36,7 +36,7 @@ function base32Encode(data: Uint8Array): string {
  * Decodes a base 32 string to a buffer
  * @param encoded Base 32 string to decode
  */
-function base32Decode(encoded: string): Uint8Array {
+export function base32Decode(encoded: string): Uint8Array {
     encoded = encoded.replace(/=/g, "");
     const buf = new Uint8Array(Math.floor(encoded.length * 5 / 8));
 
@@ -52,9 +52,4 @@ function base32Decode(encoded: string): Uint8Array {
     }
 
     return buf;
-}
-
-export default {
-    encode: base32Encode,
-    decode: base32Decode
 }
