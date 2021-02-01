@@ -23,16 +23,6 @@ function write5Bits(buf: Uint8Array, cursor: number, data: number): void {
 }
 
 /**
- * Encodes a buffer to a base 32 string
- * @param data Buffer to encode
- */
-export function base32Encode(data: Uint8Array): string {
-    let encoded = "";
-
-    return encoded;
-}
-
-/**
  * Decodes a base 32 string to a buffer
  * @param encoded Base 32 string to decode
  */
