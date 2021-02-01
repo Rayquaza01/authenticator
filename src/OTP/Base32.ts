@@ -1,5 +1,11 @@
 const BASE_32_LOOKUP = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
+/**
+ * Writes to a buffer 5 bits at a time
+ * @param buf Buffer to write to
+ * @param cursor Address to start writing at
+ * @param data Data to write (only the five lowest bits are used)
+ */
 function write5Bits(buf: Uint8Array, cursor: number, data: number): void {
     const byte = cursor >> 3;
     const bit = cursor & 0x7;
@@ -16,12 +22,20 @@ function write5Bits(buf: Uint8Array, cursor: number, data: number): void {
     }
 }
 
+/**
+ * Encodes a buffer to a base 32 string
+ * @param data Buffer to encode
+ */
 function base32Encode(data: Uint8Array): string {
     let encoded = "";
 
     return encoded;
 }
 
+/**
+ * Decodes a base 32 string to a buffer
+ * @param encoded Base 32 string to decode
+ */
 function base32Decode(encoded: string): Uint8Array {
     encoded = encoded.replace(/=/g, "");
     const buf = new Uint8Array(Math.floor(encoded.length * 5 / 8));
