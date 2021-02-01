@@ -1,32 +1,46 @@
-// import { Buffer } from "buffer";
-
 const BASE_32_LOOKUP = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
-function writeBufferBit(buf: Uint8Array, offset: number, data: number) {
-    const byte = offset >> 3;
-    const bit = offset & 0x7;
+function write5Bits(buf: Uint8Array, cursor: number, data: number): void {
+    const byte = cursor >> 3;
+    const bit = cursor & 0x7;
 
-    buf[byte] |= (data & 0x1) << (7 - bit);
+    data = (data & 0x1F);
+
+    let shiftBy = Math.abs(bit - 3);
+
+    if (bit <= 3) {
+        buf[byte] |= data << shiftBy;
+    } else {
+        buf[byte] |= data >> shiftBy;
+        buf[byte + 1] |= data << (8 - shiftBy);
+    }
 }
 
-export function base32Decode(encoded: string): Uint8Array {
-    const usedBits = encoded.length * 5;
-    const bufferLength = Math.ceil(usedBits / 8);
+function base32Encode(data: Uint8Array): string {
+    let encoded = "";
 
-    const buf = new Uint8Array(bufferLength);
+    return encoded;
+}
+
+function base32Decode(encoded: string): Uint8Array {
+    encoded = encoded.replace(/=/g, "");
+    const buf = new Uint8Array(Math.floor(encoded.length * 5 / 8));
 
     let cursor = 0;
     for (let i = 0; i < encoded.length; i++) {
         const data = BASE_32_LOOKUP.indexOf(encoded[i]) & 0x1F;
-        if (data === 0x3D) { // =
+        if (encoded[i] === "=") {
             break;
         }
 
-        for (let j = 0; j < 5; j++) {
-            writeBufferBit(buf, cursor, data >> (4 - j));
-            cursor++;
-        }
+        write5Bits(buf, cursor, data);
+        cursor += 5;
     }
 
     return buf;
+}
+
+export default {
+    encode: base32Encode,
+    decode: base32Decode
 }
