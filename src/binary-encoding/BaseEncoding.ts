@@ -6,7 +6,7 @@ import { PADDING, ModeInfo, Modes } from "./BaseModes";
  * @param encoded Base 32/64 string to decode
  * @param mode base32 or base64
  */
-export function encode(encoded: string, mode: Modes): Uint8Array {
+export function decode(encoded: string, mode: Modes): Uint8Array {
     let currentMode = ModeInfo[mode];
 
     encoded = encoded.replace(new RegExp(PADDING, "g"), "");
