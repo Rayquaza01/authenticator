@@ -82,10 +82,10 @@ describe("Decode", () => {
     })
 
     it("should fail to decode a badly formatted string, base 64", () => {
-        expect(() => decode(notBaseEncoded, "base64")).to.throw(new Error("Encoded string is not the correct format"));
+        expect(() => decode(notBaseEncoded, "base64")).to.throw("Encoded string is not the correct format");
     });
 
     it("should fail to decode a badly formatted string, base 32", () => {
-        expect(() => decode(notBaseEncoded, "base32")).to.throw(new Error("Encoded string is not the correct format"));
+        expect(() => decode(notBaseEncoded, "base32")).to.throw("Encoded string is not the correct format");
     });
 });
