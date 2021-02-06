@@ -17,13 +17,13 @@ export const ModeInfo: Record<Modes, BaseMode>  = {
         alphabet: BASE_32_LOOKUP,
         padding: "=",
         minLength: 8,
-        regex: /^[A-Z2-7]+=*/
+        regex: /^[A-Z2-7]*=*/
     },
     base64: {
         bitsPerChar: 6,
         alphabet: BASE_64_LOOKUP,
         padding: "=",
         minLength: 4,
-        regex: /^[A-Za-z0-9+/]+=*/
+        regex: /^[A-Za-z0-9+/]*=*/
     }
 };
