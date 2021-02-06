@@ -1,0 +1,29 @@
+button.primary {
+    color: #ffffff;
+    text-align: center;
+    background-color: #0060df;
+    border-radius: 2px;
+    height: 32px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    min-width: 132px;
+    border: none;
+}
+
+button.primary:hover {
+    background-color: #003eaa;
+}
+
+button.primary:active {
+    background-color: #002275;
+}
+
+button.primary:focus {
+    box-shadow: 0 0 0 1px #0a84ff inset, 0 0 0 1px #0a84ff, 0 0 0 4px rgba(10, 132, 255, 0.3)
+}
+
+button.primary:disabled {
+    opacity: .4;
+}
