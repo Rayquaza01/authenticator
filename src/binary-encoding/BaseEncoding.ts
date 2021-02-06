@@ -9,7 +9,6 @@ import { ModeInfo, Modes } from "./BaseModes";
 export function decode(encoded: string, mode: Modes): Uint8Array {
     let currentMode = ModeInfo[mode];
 
-    console.log(encoded.match(currentMode.regex))
     if (!(encoded.match(currentMode.regex) && encoded.length % currentMode.minLength === 0)) {
         throw new Error("Encoded string is not the correct format");
     }
@@ -38,7 +37,7 @@ export function encode(buffer: Uint8Array, mode: Modes): string {
 
     let cursor = 0;
     while (cursor < buffer.length * 8) {
-        let bitsToRead = (cursor + 6 < buffer.length * 8)
+        let bitsToRead = (cursor + currentMode.bitsPerChar < buffer.length * 8)
             ? currentMode.bitsPerChar
             : buffer.length * 8 - cursor;
 
