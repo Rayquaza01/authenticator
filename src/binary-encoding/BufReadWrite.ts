@@ -27,12 +27,14 @@ export function readNBits(buf: Readonly<Uint8Array>, address: number, count: num
     const byte = address >> 0x3;
     const bit = address & 0x7;
 
+    const mask = 2 ** count - 1;
+
     let shiftBy = Math.abs(bit - (8 - count));
 
     if (bit <= 8 - count) {
-        result = buf[byte] >> shiftBy;
+        result = (buf[byte] >> shiftBy) & mask;
     } else {
-        result = buf[byte] << shiftBy;
+        result = (buf[byte] << shiftBy) & mask;
         result |= buf[byte + 1] >> (8 - shiftBy);
     }
 
