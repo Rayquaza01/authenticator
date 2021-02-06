@@ -9,13 +9,16 @@ import { ModeInfo, Modes } from "./BaseModes";
 export function decode(encoded: string, mode: Modes): Uint8Array {
     let currentMode = ModeInfo[mode];
 
-    if (!(encoded.match(currentMode.regex) && encoded.length % currentMode.minLength === 0)) {
+    // if given string fails validation regex, throw error
+    if (!encoded.match(currentMode.regex)) {
         throw new Error("Encoded string is not the correct format");
     }
 
+    // remove padding from string
     encoded = encoded.replace(new RegExp(currentMode.padding, "g"), "");
     const buf = new Uint8Array(Math.floor(encoded.length * currentMode.bitsPerChar / 8));
 
+    // loop through string, writing each character's worth of bits to the result buffer
     let cursor = 0;
     for (let i = 0; i < encoded.length; i++) {
         const data = currentMode.alphabet.indexOf(encoded[i]);
@@ -37,15 +40,20 @@ export function encode(buffer: Uint8Array, mode: Modes): string {
 
     let cursor = 0;
     while (cursor < buffer.length * 8) {
+        // if incrementing cursor is in buffer bounds, use bits per character
+        // otherwise use however many bits are left in the buffer that haven't been read
         let bitsToRead = (cursor + currentMode.bitsPerChar < buffer.length * 8)
             ? currentMode.bitsPerChar
             : buffer.length * 8 - cursor;
 
+        // read bits from buffer
+        // shift so that first bit read is always the most significant
         let data = readNBits(buffer, cursor, bitsToRead) << (currentMode.bitsPerChar - bitsToRead);
         result += currentMode.alphabet[data]
         cursor += bitsToRead;
     }
 
+    // pad end of string to multiple length with padding character
     result = result.padEnd(currentMode.minLength * Math.ceil(result.length / currentMode.minLength), currentMode.padding);
 
     return result;
