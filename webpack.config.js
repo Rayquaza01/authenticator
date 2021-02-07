@@ -8,8 +8,9 @@ module.exports = {
     mode: "development",
     entry: {
         background: __dirname + "/src/background.ts",
-        popup: __dirname + "/src/popup.ts",
-        options: __dirname + "/src/options.ts"
+        popup: __dirname + "/src/pages/popup/popup.ts",
+        options: __dirname + "/src/pages/options/options.ts",
+        reset: __dirname + "/src/pages/reset/reset.ts"
     },
     // devtool: "source-map",
     devtool: "eval-source-map",
@@ -36,15 +37,21 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: "src/popup.html",
+            template: "src/pages/popup/popup.html",
             filename: "popup.html",
             chunks: ["popup"],
             cache: false
         }),
         new HtmlWebpackPlugin({
-            template: "src/options.html",
+            template: "src/pages/options/options.html",
             filename: "options.html",
             chunks: ["options"],
+            cache: false
+        }),
+        new HtmlWebpackPlugin({
+            template: "src/pages/reset/reset.html",
+            filename: "reset.html",
+            chunks: ["reset"],
             cache: false
         }),
         new copyWebpackPlugin({
