@@ -1,4 +1,4 @@
-const colorRegex = /^#[0-9A-F]{6}$/
+const colorRegex = /^#[0-9A-F]{6}$/;
 
 export interface OptionsInterface {
     fontColor: string
@@ -14,13 +14,13 @@ export class Options {
         this.setBackgroundColor(data?.backgroundColor);
     }
 
-    setFontColor(c?: string) {
+    setFontColor(c?: string): void {
         if (typeof c === "string" && c.match(colorRegex)) {
             this.fontColor = c;
         }
     }
 
-    setBackgroundColor(c?: string) {
+    setBackgroundColor(c?: string): void {
         if (typeof c === "string" && c.match(colorRegex)) {
             this.backgroundColor = c;
         }

@@ -4,7 +4,7 @@ export interface BaseMode {
     padding: string
     minLength: number
     regex: RegExp
-};
+}
 
 export type Modes = "base32" | "base64" | "hex";
 

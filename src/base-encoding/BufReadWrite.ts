@@ -14,7 +14,7 @@ export function writeNBits(buf: Uint8Array, address: number, data: number, count
     data = (data & (2 ** count - 1));
 
     // number of bits to shift in order to get first bit to be the count bit
-    let shiftBy = Math.abs(bit - (8 - count));
+    const shiftBy = Math.abs(bit - (8 - count));
 
     // if current write falls within a single byte, write the data to that byte
     if (bit <= 8 - count) {
@@ -44,7 +44,7 @@ export function readNBits(buf: Readonly<Uint8Array>, address: number, count: num
 
     const mask = 2 ** count - 1;
 
-    let shiftBy = Math.abs(bit - (8 - count));
+    const shiftBy = Math.abs(bit - (8 - count));
 
     if (bit <= 8 - count) {
         result = (buf[byte] >> shiftBy) & mask;

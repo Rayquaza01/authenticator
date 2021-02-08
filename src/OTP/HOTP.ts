@@ -16,7 +16,7 @@ export async function HOTP(key: string | Uint8Array, counter: number): Promise<s
 
     const counterBuffer = numberToBytes(counter);
 
-    const hmac = await crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-1" }, false, ["sign"])
+    const hmac = await crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
 
     const HMACValue = new Uint8Array(await crypto.subtle.sign("HMAC", hmac, counterBuffer));
 
