@@ -7,7 +7,7 @@
  */
 export function writeNBits(buf: Uint8Array, address: number, data: number, count: number): void {
     // convert address to bit and byte
-    const byte = Math.floor(address / 8);
+    const byte = address >>> 3;
     const bit = address & 0x7;
 
     // mask, isolates the last count bits of a number
@@ -39,7 +39,7 @@ export function readNBits(buf: Readonly<Uint8Array>, address: number, count: num
 
     let result = 0;
 
-    const byte = Math.floor(address / 8);
+    const byte = address >>> 3;
     const bit = address & 0x7;
 
     const mask = 2 ** count - 1;
