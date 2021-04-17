@@ -60,7 +60,8 @@ module.exports = {
                     toType: "dir"
                 }
             ]
-        })
+        }),
+        new MiniCssExtractPlugin()
     ],
     externals: {
         "webextension-polyfill": "browser"
