@@ -1,3 +1,13 @@
+# Deprecation Notice
+The encryption included in this extension is not secure. As such, I am deprecating this extension. It will no longer be installable from AMO. You may still use it, but migrating to a different app is recommended.
+
+Apologies for any inconvenience.
+
+# Migration
+To export your keys, go to the extension settings (the gear in the popup), and click the "Export" button at the bottom of the page. A file (totp.json) will be downloaded containing your authenticator keys. You can then use those keys with a different authenticator app.
+
+---
+
 # authenticator
 
 Firefox addon that generates TOTPs for 2 factor authentication
